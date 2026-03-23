@@ -76,10 +76,11 @@ async function resolvePlayerId(inputValue) {
 function renderPlayer(profileData, wlData) {
     // Для удобства достаём объект profile в отдельную переменную.
     const profile = profileData.profile;
+    const mmr = profileData.computed_mmr ?? profileData.mmr_estimate?.estimate;
 
     // Показываем имя игрока. Если имени нет, выводим запасной текст.
     document.getElementById('playerName').textContent =
-        profile?.personaname || 'Р‘РµР· РёРјРµРЅРё';
+        profile?.personaname || 'Без имени';
 
     // Подставляем ссылку на аватар игрока.
     document.getElementById('avatar').src = profile?.avatarfull || '';
@@ -88,7 +89,7 @@ function renderPlayer(profileData, wlData) {
 
     // Показываем MMR. Если оценки нет, выводим запасной текст.
     document.getElementById('mmr').textContent =
-        `MMR: ${profileData.mmr_estimate?.estimate ?? 'РЅРµС‚ РґР°РЅРЅС‹С…'}`;
+        `MMR: ${mmr ?? 'нет данных'}`;
 
     // Берём количество побед. Если значения нет, ставим 0.
     const wins = wlData.win || 0;
@@ -114,7 +115,7 @@ async function searchPlayer() {
 
     // Если поле пустое, показываем предупреждение и выходим из функции.
     if (!inputValue) {
-        alert('Р’РІРµРґРёС‚Рµ Steam ID, SteamID64 РёР»Рё РЅРёРє');
+        alert('Введите Steam ID, SteamID64 или ник');
         return;
     }
 
@@ -138,7 +139,7 @@ async function searchPlayer() {
         // Пишем ошибку в консоль браузера для отладки.
         console.error(error);
         // Показываем пользователю понятное сообщение.
-        alert('РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РїСЂРѕС„РёР»СЊ. РџСЂРѕРІРµСЂСЊС‚Рµ ID РёР»Рё РЅРёРє РёРіСЂРѕРєР°.');
+        alert('Не удалось получить профиль. Проверьте ID или ник игрока.');
     }
 }
 
