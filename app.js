@@ -77,6 +77,7 @@ function renderPlayer(profileData, wlData) {
     // Для удобства достаём объект profile в отдельную переменную.
     const profile = profileData.profile;
     const mmr = profileData.computed_mmr ?? profileData.mmr_estimate?.estimate;
+    const roundedMmr = mmr == null ? null : Math.round(mmr);
 
     // Показываем имя игрока. Если имени нет, выводим запасной текст.
     document.getElementById('playerName').textContent =
@@ -89,7 +90,7 @@ function renderPlayer(profileData, wlData) {
 
     // Показываем MMR. Если оценки нет, выводим запасной текст.
     document.getElementById('mmr').textContent =
-        `MMR: ${mmr ?? 'нет данных'}`;
+        `MMR: ${roundedMmr ?? 'нет данных'}`;
 
     // Берём количество побед. Если значения нет, ставим 0.
     const wins = wlData.win || 0;
