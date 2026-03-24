@@ -1,10 +1,24 @@
 .mainframe {
     /* background-color: blueviolet; */
     font-size: 16px;
-    width: 1920px;
-    height: 1080px;
+    width: 100%;
+    height: 100%;
     padding: 15px 20px;
     /* color: violet; */
     /* border: 2px solid violet; */
 
+}
+.secondframe{
+    width: 90%;
+    height: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.baseinfo{
+    border: 2px solid rgb(129, 59, 129);
+    padding: 8px 4px;
+    display: flex;
+    width: 417px;
+    background-color: rgb(196, 156, 196);
 }
