@@ -21,8 +21,16 @@ document.querySelector('.searchbtn').addEventListener('click', function(event){
     .then(data => {
         player.innerText = data.profile.personaname;
         mmrjs.innerText = data.computed_mmr;
-        tmmrjs.innerText = data.computed_mmr_turbo;
-        
+        tmmrjs.innerText = data.computed_mmr_turbo;    
+    });
+    fetch (`https://api.opendota.com/api/players/${account_id}/wl`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.win + data.lose == 0) {
+        wrjs.innerText = "игры не найдены";
+      } else {
+      wrjs.innerText = data.win;
+      }
     });
 
 })
