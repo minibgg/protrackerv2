@@ -32,6 +32,24 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
           img.src = data.profile.avatarfull; // Установка пути из JSON
         document.getElementById('steamavatar').appendChild(img);
     });
+    fetch(`https://api.opendota.com/api/players/${account_id}/recentMatches`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+
+          if (data.length > 0) {
+            clearInterval(interval);
+            console.log('данные появились');
+          }
+
+          tries++;
+          if (tries >= 10) {
+            clearInterval(interval);
+            console.log('время ожидания вышло');
+          }
+          document.getElementById("matchhistory").innerText = data[0].match_id
+
+        });
     fetch (`https://api.opendota.com/api/players/${account_id}/wl`) //только win lose
     .then(response => response.json()) //конвертация в JSON
     .then(data => { //только тут работа с данными
@@ -65,15 +83,16 @@ fetch(`http://127.0.0.1:3000/api/refresh/${account_id}`, { //поменять в
             clearInterval(interval);
             console.log('время ожидания вышло');
           }
+          document.getElementById("matchhistory").innerText = data[0].match_id
 
         });
     }, 3000);
-      fetch (`https://api.opendota.com/api/players/${account_id}/recentMatches`) //последние игры
-    .then(response => response.json()) //конвертация в JSON
-    .then(data => { //только тут работа с данными
-      console.log(data[0].match_id)
-      fetch()
-    });
+//      fetch (`https://api.opendota.com/api/players/${account_id}/recentMatches`) //последние игры
+//    .then(response => response.json()) //конвертация в JSON
+//    .then(data => { //только тут работа с данными
+//      console.log(data[0].match_id)
+//      document.getElementById("matchhistory").innerText = 
+//    });
   });//до сюда
 });
 
