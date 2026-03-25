@@ -41,13 +41,28 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
       wrjs.innerText = "WR: " + ((data.win / (data.win + data.lose)) * 100).toFixed(1) + "%";
       }
     });
-document.querySelector(".updatebtn").addEventListener('click', function(updatebutton){
-fetch(`http://127.0.0.1:3000/api/refresh/${account_id}`, { //поменять всё когда пойму
-  method: 'POST'
-})
-  .then(response => response.json())
-  .then(() => {
-    let tries = 0;
+          fetch(`https://api.opendota.com/api/players/${account_id}/recentMatches`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          const match_id = data[0].match_id
+          fetch(`https://api.opendota.com/api/matches/${match_id}`)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data)
+            console.log(data.players[0].hero_id)
+          });
+    });
+
+
+
+    document.querySelector(".updatebtn").addEventListener('click', function(updatebutton){
+      fetch(`http://127.0.0.1:3000/api/refresh/${account_id}`, { //поменять всё когда пойму
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then(() => {
+        let tries = 0;
 
     let interval = setInterval(() => {
       fetch(`https://api.opendota.com/api/players/${account_id}/recentMatches`)
