@@ -14,11 +14,15 @@ document.querySelector('.searchbtn').addEventListener('click', function(event){
        alert("нерпавельный Id")
     }
 
-    fetch (`https://api.opendota.com/api/players/${account_id}`)
+    fetch (`https://api.opendota.com/api/players/${account_id}`)//информация об аккаунте
     .then(response => response.json()) // Конвертация в JSON
     .then(data => { //только тут работа с данными
         player.innerText = data.profile.personaname;
-        mmrjs.innerText = data.computed_mmr;
+        if (data.computed_mmr !== null) {
+          mmrjs.innerText = data.computed_mmr;
+        } else {
+          mmrjs.innerText = "не игр в рейтинге"
+        }
         if (data.computed_mmr_turbo !== null) {
           tmmrjs.innerText = data.computed_mmr_turbo;    
         } else {
@@ -28,7 +32,7 @@ document.querySelector('.searchbtn').addEventListener('click', function(event){
           img.src = data.profile.avatarfull; // Установка пути из JSON
         document.getElementById('steamavatar').appendChild(img);
     });
-    fetch (`https://api.opendota.com/api/players/${account_id}/wl`)
+    fetch (`https://api.opendota.com/api/players/${account_id}/wl`) //только win lose
     .then(response => response.json()) //конвертация в JSON
     .then(data => { //только тут работа с данными
       if (data.win + data.lose == 0) {
@@ -37,5 +41,11 @@ document.querySelector('.searchbtn').addEventListener('click', function(event){
       wrjs.innerText = ((data.win / (data.win + data.lose)) * 100).toFixed(1) + "%";
       }
     });
+    fetch (`https://api.opendota.com/api/players/${account_id}/recentMatches`) //последние игры
+    .then(response => response.json()) //конвертация в JSON
+    .then(data => { //только тут работа с данными
+      console.log(data.match_id)
+    });
 
 })
+//234816423
