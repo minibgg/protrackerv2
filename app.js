@@ -21,7 +21,11 @@ document.querySelector('.searchbtn').addEventListener('click', function(event){
     .then(data => {
         player.innerText = data.profile.personaname;
         mmrjs.innerText = data.computed_mmr;
-        tmmrjs.innerText = data.computed_mmr_turbo;    
+        if (data.computed_mmr_turbo !== null) {
+          tmmrjs.innerText = data.computed_mmr_turbo;    
+        } else {
+          tmmrjs.innerText = "нет игр в турбо"  
+        }
     });
     fetch (`https://api.opendota.com/api/players/${account_id}/wl`)
     .then(response => response.json())
@@ -29,7 +33,7 @@ document.querySelector('.searchbtn').addEventListener('click', function(event){
       if (data.win + data.lose == 0) {
         wrjs.innerText = "игры не найдены";
       } else {
-      wrjs.innerText = data.win;
+      wrjs.innerText = ((data.win / (data.win + data.lose)) * 100).toFixed(1) + "%";
       }
     });
 
