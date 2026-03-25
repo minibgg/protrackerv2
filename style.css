@@ -17,7 +17,7 @@
     align-items: center;
 }
 .baseinfo{
-    border: 8px solid #1C242D;
+    border: 6px solid #1C242D;
     padding: 8px 4px;
     display: flex;
     width: 417px;
@@ -34,7 +34,7 @@
 }
 .searchbtn{
     appearance: none;
-    border: 8px solid #1C242D;
+    border: 6px solid #1C242D;
     background-color: #242F39;
     color: #9aa6b2;
     cursor: pointer;

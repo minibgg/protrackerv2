@@ -19,12 +19,12 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
     .then(data => { //только тут работа с данными
         player.innerText = data.profile.personaname;
         if (data.computed_mmr !== null) {
-          mmrjs.innerText = "Примерный mmr:" + data.computed_mmr;
+          mmrjs.innerText = "Примерный mmr:" + data.computed_mmr.toFixed(0);
         } else {
           mmrjs.innerText = "Нет игр в рейтинге"
         }
         if (data.computed_mmr_turbo !== null) {
-          tmmrjs.innerText = "Примерный turbo mmr: " + data.computed_mmr_turbo;    
+          tmmrjs.innerText = "Примерный turbo mmr: " + data.computed_mmr_turbo.toFixed(0);    
         } else {
           tmmrjs.innerText = "Нет игр в турбо"  
         }
