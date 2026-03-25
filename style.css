@@ -22,5 +22,35 @@
     display: flex;
     width: 417px;
     background-color: #242F39;
-    color: #ffffff;
+    color: #9aa6b2;
+}
+.baseinfo::placeholder{
+    color: #9aa6b2;
+}
+.framesteamid{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.searchbtn{
+    appearance: none;
+    border: 8px solid #1C242D;
+    background-color: #242F39;
+    color: white;
+    cursor: pointer;
+    padding: 8px 4px;
+}
+.searchbtn:hover{
+    background-color: #435260;
+}
+.updatebtn{
+    appearance: none;
+    border: 8px solid #1C242D;
+    background-color: #242F39;
+    color: white;
+    cursor: pointer;
+    padding: 8px 4px;
+}
+.updatebtn:hover{
+    background-color: #435260;
 }
