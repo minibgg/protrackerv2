@@ -8,12 +8,12 @@ const mmrjs = document.getElementById("mmr");
 const tmmrjs = document.getElementById("tmmr");
 const wrjs = document.getElementById("wr");
 //ожидание клика и после код
-document.querySelector('.searchbtn').addEventListener('click', function(event){
+document.querySelector('.searchbtn').addEventListener('click', function searchplayer(searchbutton){
   let account_id = input.value.trim()
     if (!input.value){
        alert("нерпавельный Id")
     }
-
+    
     fetch (`https://api.opendota.com/api/players/${account_id}`)//информация об аккаунте
     .then(response => response.json()) // Конвертация в JSON
     .then(data => { //только тут работа с данными
@@ -41,11 +41,25 @@ document.querySelector('.searchbtn').addEventListener('click', function(event){
       wrjs.innerText = ((data.win / (data.win + data.lose)) * 100).toFixed(1) + "%";
       }
     });
-    fetch (`https://api.opendota.com/api/players/${account_id}/recentMatches`) //последние игры
-    .then(response => response.json()) //конвертация в JSON
-    .then(data => { //только тут работа с данными
-      console.log(data.match_id)
+//    fetch (`https://api.opendota.com/api/players/${account_id}/recentMatches`) //последние игры
+//    .then(response => response.json()) //конвертация в JSON
+//    .then(data => { //только тут работа с данными
+//      console.log(data[0].match_id)
+//      fetch()
+//    });
+document.querySelector(".updatebtn").addEventListener('click', function(updatebutton){
+  fetch(`https://api.opendota.com/api/players/${account_id}/refresh`, {
+    method: `POST`
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
     });
+});
 
 })
+//test steam id
 //234816423
+//873568882
+//1315428024
+//121893417
