@@ -19,14 +19,14 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
     .then(data => { //только тут работа с данными
         player.innerText = data.profile.personaname;
         if (data.computed_mmr !== null) {
-          mmrjs.innerText = data.computed_mmr;
+          mmrjs.innerText = "Примерный mmr:" + data.computed_mmr;
         } else {
-          mmrjs.innerText = "не игр в рейтинге"
+          mmrjs.innerText = "Нет игр в рейтинге"
         }
         if (data.computed_mmr_turbo !== null) {
-          tmmrjs.innerText = data.computed_mmr_turbo;    
+          tmmrjs.innerText = "Примерный turbo mmr: " + data.computed_mmr_turbo;    
         } else {
-          tmmrjs.innerText = "нет игр в турбо"  
+          tmmrjs.innerText = "Нет игр в турбо"  
         }
         const img = document.createElement('img');
           img.src = data.profile.avatarfull; // Установка пути из JSON
@@ -38,23 +38,43 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
       if (data.win + data.lose == 0) {
         wrjs.innerText = "игры не найдены";
       } else {
-      wrjs.innerText = ((data.win / (data.win + data.lose)) * 100).toFixed(1) + "%";
+      wrjs.innerText = "WR: " + ((data.win / (data.win + data.lose)) * 100).toFixed(1) + "%";
       }
     });
-//    fetch (`https://api.opendota.com/api/players/${account_id}/recentMatches`) //последние игры
-//    .then(response => response.json()) //конвертация в JSON
-//    .then(data => { //только тут работа с данными
-//      console.log(data[0].match_id)
-//      fetch()
-//    });
 document.querySelector(".updatebtn").addEventListener('click', function(updatebutton){
-  fetch(`http://127.0.0.1:3000/api/refresh/${account_id}`, {
-    method: 'POST'
-  })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
+fetch(`http://127.0.0.1:3000/api/refresh/${account_id}`, { //поменять всё когда пойму
+  method: 'POST'
+})
+  .then(response => response.json())
+  .then(() => {
+    let tries = 0;
+
+    let interval = setInterval(() => {
+      fetch(`https://api.opendota.com/api/players/${account_id}/recentMatches`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+
+          if (data.length > 0) {
+            clearInterval(interval);
+            console.log('данные появились');
+          }
+
+          tries++;
+          if (tries >= 10) {
+            clearInterval(interval);
+            console.log('время ожидания вышло');
+          }
+
+        });
+    }, 3000);
+      fetch (`https://api.opendota.com/api/players/${account_id}/recentMatches`) //последние игры
+    .then(response => response.json()) //конвертация в JSON
+    .then(data => { //только тут работа с данными
+      console.log(data[0].match_id)
+      fetch()
     });
+  });//до сюда
 });
 
 })
