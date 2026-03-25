@@ -3,9 +3,11 @@
     font-size: 16px;
     width: 100%;
     height: 100%;
-    padding: 15px 20px;
+}
+.frameinfo{
     border: 2px solid #242F39;
-
+    padding: 15px 20px;
+    background-color: #242F39;
 }
 .secondframe{
     width: 90%;
@@ -15,9 +17,10 @@
     align-items: center;
 }
 .baseinfo{
-    border: 2px solid rgb(129, 59, 129);
+    border: 8px solid #1C242D;
     padding: 8px 4px;
     display: flex;
     width: 417px;
-    background-color: rgb(196, 156, 196);
+    background-color: #242F39;
+    color: #ffffff;
 }
