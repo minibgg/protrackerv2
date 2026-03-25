@@ -48,8 +48,8 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
 //      fetch()
 //    });
 document.querySelector(".updatebtn").addEventListener('click', function(updatebutton){
-  fetch(`https://api.opendota.com/api/players/${account_id}/refresh`, {
-    method: `POST`
+  fetch(`http://127.0.0.1:3000/api/refresh/${account_id}`, {
+    method: 'POST'
   })
     .then(response => response.json())
     .then(data => {
