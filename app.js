@@ -94,15 +94,19 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
 
     const playerInMatch = games.players.find(player => player.account_id == account_id);//понять что написно
 
-    console.log('match id:', games.match_id);
-    console.log('hero id:', playerInMatch.hero_id);
-    console.log('kills:', playerInMatch.kills);
-    console.log('deaths:', playerInMatch.deaths);
-    console.log('assists:', playerInMatch.assists);
-    gameHistory.innerHTML += `<div>Match ID: ${match.match_id}</div>`;
-  });
-}});
-
+      gameHistory.innerHTML += `
+        <div>
+          <div>Match ID: ${games.match_id}</div>
+          <div>Hero ID: ${playerInMatch.hero_id}</div>
+          <div>Kills: ${playerInMatch.kills}</div>
+          <div>Deaths: ${playerInMatch.deaths}</div>
+          <div>Assists: ${playerInMatch.assists}</div>
+        </div>
+        <br>
+      `;
+    });
+  }
+});
 //              const matchInfo = await dotaApi.getMatchInfo(match_id)
 //            console.log(matchInfo);
 //            console.log(matchInfo.players[0].hero_id);
