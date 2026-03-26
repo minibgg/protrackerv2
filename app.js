@@ -92,9 +92,11 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
   data.slice(0, 5).forEach(async (match) => {
     const games = await dotaApi.getMatchInfo(match.match_id);
 
-    const playerInMatch = games.players.find(player => player.account_id == account_id);//понять что написно: от
+    const playerInMatch = games.players.find(function(player) {
+  return player.account_id == account_id;
+});
 
-      gameHistory.innerHTML += ` 
+      gameHistory.innerHTML += `
         <div>
           <div>Match ID: ${games.match_id}</div>
           <div>Hero ID: ${playerInMatch.hero_id}</div>
@@ -104,7 +106,7 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
         </div>
         <br>
       `;
-    });//до
+    });
   }
 });
 //test steam id
