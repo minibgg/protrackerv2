@@ -92,8 +92,12 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
   data.slice(0, 5).forEach(async (match) => {
     const games = await dotaApi.getMatchInfo(match.match_id);
 
-    const playerInMatch = games.players.find(function(player) {
-  return player.account_id == account_id;
+    const playerInMatch = games.players.find((player) => {
+  if (player.account_id == account_id) {
+    console.log(player.hero_id);
+    return true;
+  }
+  return false;
 });
 
       gameHistory.innerHTML += `
