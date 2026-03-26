@@ -29,7 +29,7 @@ const dotaApi = {
   },
   async getMatchInfo(match_id){
     const res = await fetch(`https://api.opendota.com/api/matches/${match_id}`)
-    const data = await res.json
+    const data = await res.json();
     return data;
   }
 
@@ -76,6 +76,7 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
 
     async function PlayerWinLose(account_id){
       const data = await dotaApi.getWinLose(account_id)
+      const result = data.win + data.lose;
       if (result == 0) {
         wrjs.innerText = "игры не найдены";
       } else {
@@ -84,46 +85,15 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
     };
 
           async function PlayerRecentMatches(account_id){
-            const data = await dotaApi.getRecentMatches
-            const match_id = data[0].match_id
-              async function getMatchInfo(match_id){
-            console.log(data)
-            console.log(data.players[0].hero_id)
+            const data = await dotaApi.getRecentMatches(account_id);
+
+            const match_id = data[0].match_id;
+
+              const matchInfo = await dotaApi.getMatchInfo(match_id)
+            console.log(matchInfo);
+            console.log(matchInfo.players[0].hero_id);
           };
-    };
-});
-
-    document.querySelector(".updatebtn").addEventListener('click', function(updatebutton){
-      fetch(`http://127.0.0.1:3000/api/refresh/${account_id}`, { //поменять всё когда пойму
-        method: 'POST'
-      })
-      .then(response => response.json())
-      .then(() => {
-        let tries = 0;
-
-    let interval = setInterval(() => {
-      fetch(`https://api.opendota.com/api/players/${account_id}/recentMatches`)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-
-          if (data.length > 0) {
-            clearInterval(interval);
-            console.log('данные появились');
-          }
-
-          tries++;
-          if (tries >= 10) {
-            clearInterval(interval);
-            console.log('время ожидания вышло');
-          }
-          document.getElementById("matchhistory").innerText = data[0].match_id
-
-        });
-    }, 3000);
-  });//до сюда
-});
-
+    });
 
 //test steam id
 //234816423
