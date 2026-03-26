@@ -26,7 +26,13 @@ const dotaApi = {
     const res = await fetch(`https://api.opendota.com/api/players/${account_id}/recentMatches`)
     const data = await res.json();
     return data;
+  },
+  async getMatchInfo(match_id){
+    const res = await fetch(`https://api.opendota.com/api/matches/${match_id}`)
+    const data = await res.json
+    return data;
   }
+
 }
 //получаем информацию о id
 const input = document.getElementById("steamid")
@@ -42,6 +48,8 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
        return;
     }
     PlayerProfile(account_id);
+    PlayerWinLose(account_id);
+    PlayerRecentMatches(account_id);
     
     async function PlayerProfile(account_id){
       const data = await dotaApi.getAccountInfo(account_id)
@@ -65,28 +73,25 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
         document.getElementById('steamavatar').innerText = '';
         document.getElementById('steamavatar').appendChild(img);
     };
-    fetch (`https://api.opendota.com/api/players/${account_id}/wl`) //только win lose
-    .then(response => response.json()) //конвертация в JSON
-    .then(data => { //только тут работа с данными
-      if (data.win + data.lose == 0) {
+
+    async function PlayerWinLose(account_id){
+      const data = await dotaApi.getWinLose(account_id)
+      if (result == 0) {
         wrjs.innerText = "игры не найдены";
       } else {
       wrjs.innerText = "WR: " + ((data.win / (data.win + data.lose)) * 100).toFixed(1) + "%";
       }
-    });
-          fetch(`https://api.opendota.com/api/players/${account_id}/recentMatches`)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          const match_id = data[0].match_id
-          fetch(`https://api.opendota.com/api/matches/${match_id}`)
-          .then(response => response.json())
-          .then(data => {
+    };
+
+          async function PlayerRecentMatches(account_id){
+            const data = await dotaApi.getRecentMatches
+            const match_id = data[0].match_id
+              async function getMatchInfo(match_id){
             console.log(data)
             console.log(data.players[0].hero_id)
-          });
-    });
-
+          };
+    };
+});
 
     document.querySelector(".updatebtn").addEventListener('click', function(updatebutton){
       fetch(`http://127.0.0.1:3000/api/refresh/${account_id}`, { //поменять всё когда пойму
@@ -119,7 +124,7 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
   });//до сюда
 });
 
-})
+
 //test steam id
 //234816423
 //873568882
