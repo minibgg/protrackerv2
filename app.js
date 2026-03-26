@@ -50,6 +50,7 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
     PlayerProfile(account_id);
     PlayerWinLose(account_id);
     PlayerRecentMatches(account_id);
+    MatchInfo(match_id)
     
     async function PlayerProfile(account_id){
       const data = await dotaApi.getAccountInfo(account_id)
@@ -85,16 +86,24 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
     };
 
           async function PlayerRecentMatches(account_id){
-            const data = await dotaApi.getRecentMatches(account_id);
+  const data = await dotaApi.getRecentMatches(account_id);
 
-            const match_id = data[0].match_id;
+  data.slice(0, 5).forEach(async (match) => {
+    const games = await dotaApi.getMatchInfo(match.match_id);
 
-              const matchInfo = await dotaApi.getMatchInfo(match_id)
-            console.log(matchInfo);
-            console.log(matchInfo.players[0].hero_id);
-          };
-    });
+    const playerInMatch = games.players.find(player => player.account_id == account_id);
 
+    console.log('match id:', games.match_id);
+    console.log('hero id:', playerInMatch.hero_id);
+    console.log('kills:', playerInMatch.kills);
+    console.log('deaths:', playerInMatch.deaths);
+    console.log('assists:', playerInMatch.assists);
+  });
+}});
+
+//              const matchInfo = await dotaApi.getMatchInfo(match_id)
+//            console.log(matchInfo);
+//            console.log(matchInfo.players[0].hero_id);
 //test steam id
 //234816423
 //873568882
