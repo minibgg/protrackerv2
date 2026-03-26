@@ -40,6 +40,7 @@ const player = document.getElementById("player");
 const mmrjs = document.getElementById("mmr");
 const tmmrjs = document.getElementById("tmmr");
 const wrjs = document.getElementById("wr");
+const gameHistory = document.querySelector(".framegame")
 //ожидание клика и после код
 document.querySelector('.searchbtn').addEventListener('click', function searchplayer(searchbutton){
   let account_id = input.value.trim()
@@ -91,13 +92,14 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
   data.slice(0, 5).forEach(async (match) => {
     const games = await dotaApi.getMatchInfo(match.match_id);
 
-    const playerInMatch = games.players.find(player => player.account_id == account_id);
+    const playerInMatch = games.players.find(player => player.account_id == account_id);//понять что написно
 
     console.log('match id:', games.match_id);
     console.log('hero id:', playerInMatch.hero_id);
     console.log('kills:', playerInMatch.kills);
     console.log('deaths:', playerInMatch.deaths);
     console.log('assists:', playerInMatch.assists);
+    gameHistory.innerHTML += `<div>Match ID: ${match.match_id}</div>`;
   });
 }});
 
