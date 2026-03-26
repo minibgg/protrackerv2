@@ -1,6 +1,33 @@
 'use strict'
 //получаем информацию о class
 let playerinfo = document.querySelectorAll(".baseinfo")
+const dotaApi = {
+  async getAccountInfo(account_id){
+    const res = await fetch(`https://api.opendota.com/api/players/${account_id}`);
+    const data = await res.json();
+    return data;
+  },
+  async getWinLose(account_id){
+    const res = await fetch(`https://api.opendota.com/api/players/${account_id}/wl`)
+    const data = await res.json();  
+    const result = data.win + data.lose;
+    let winrate;
+    if (result == 0){
+      winrate = "0%"
+    } else {
+      winrate = ((data.win / (data.win + data.lose)) * 100).toFixed(1) + "%";
+    }
+    return{
+      ...data,
+      winrate
+    }
+  },
+  async getRecentMatches(account_id){
+    const res = await fetch(`https://api.opendota.com/api/players/${account_id}/recentMatches`)
+    const data = await res.json();
+    return data;
+  }
+}
 //получаем информацию о id
 const input = document.getElementById("steamid")
 const player = document.getElementById("player");
@@ -12,26 +39,32 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
   let account_id = input.value.trim()
     if (!input.value){
        alert("нерпавельный Id")
+       return;
     }
+    PlayerProfile(account_id);
     
-    fetch (`https://api.opendota.com/api/players/${account_id}`)//информация об аккаунте
-    .then(response => response.json()) // Конвертация в JSON
-    .then(data => { //только тут работа с данными
+    async function PlayerProfile(account_id){
+      const data = await dotaApi.getAccountInfo(account_id)
+
         player.innerText = data.profile.personaname;
+
         if (data.computed_mmr !== null) {
           mmrjs.innerText = "Примерный mmr:" + data.computed_mmr.toFixed(0);
         } else {
           mmrjs.innerText = "Нет игр в рейтинге"
         }
+
         if (data.computed_mmr_turbo !== null) {
           tmmrjs.innerText = "Примерный turbo mmr: " + data.computed_mmr_turbo.toFixed(0);    
         } else {
           tmmrjs.innerText = "Нет игр в турбо"  
         }
+
         const img = document.createElement('img');
           img.src = data.profile.avatarfull; // Установка пути из JSON
+        document.getElementById('steamavatar').innerText = '';
         document.getElementById('steamavatar').appendChild(img);
-    });
+    };
     fetch (`https://api.opendota.com/api/players/${account_id}/wl`) //только win lose
     .then(response => response.json()) //конвертация в JSON
     .then(data => { //только тут работа с данными
@@ -53,7 +86,6 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
             console.log(data.players[0].hero_id)
           });
     });
-
 
 
     document.querySelector(".updatebtn").addEventListener('click', function(updatebutton){
@@ -84,12 +116,6 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
 
         });
     }, 3000);
-//      fetch (`https://api.opendota.com/api/players/${account_id}/recentMatches`) //последние игры
-//    .then(response => response.json()) //конвертация в JSON
-//    .then(data => { //только тут работа с данными
-//      console.log(data[0].match_id)
-//      document.getElementById("matchhistory").innerText = 
-//    });
   });//до сюда
 });
 
