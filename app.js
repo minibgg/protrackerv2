@@ -31,12 +31,13 @@ const dotaApi = {
     const data = await res.json();
     return data;
   },
-  async getHeroName(hero_id){
-    const res = await fetch(`https://api.opendota.com/api/heroes`)
+  async getHeroName(hero_id){//ai changed
+    const res = await fetch(`https://api.opendota.com/api/heroes`);
     const data = await res.json();
+    const hero = data.find((hero) => hero.id == hero_id);
+    return hero ? hero.localized_name : "Unknown hero";
   }
-
-}
+  }
 //получаем информацию о id
 const input = document.getElementById("steamid")
 const player = document.getElementById("player");
@@ -45,16 +46,24 @@ const tmmrjs = document.getElementById("tmmr");
 const wrjs = document.getElementById("wr");
 const gameHistory = document.querySelector(".framegame")
 //ожидание клика и после код
-document.querySelector('.searchbtn').addEventListener('click', function searchplayer(searchbutton){
+document.querySelector('.searchbtn').addEventListener('click', async function searchplayer() {
+
   let account_id = input.value.trim()
     if (!input.value){
        alert("нерпавельный Id")
        return;
     }
-    PlayerProfile(account_id);
-    PlayerWinLose(account_id);
-    PlayerRecentMatches(account_id);
-    MatchInfo(match_id)
+      try {
+    await Promise.all([
+      PlayerProfile(account_id),
+      PlayerWinLose(account_id),
+      PlayerRecentMatches(account_id)
+    ]);
+  } catch (error) {
+    alert("Не удалось загрузить данные");
+    console.error(error);
+  }
+
     
     async function PlayerProfile(account_id){
       const data = await dotaApi.getAccountInfo(account_id)
@@ -96,22 +105,16 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
     const games = await dotaApi.getMatchInfo(match.match_id);
 
     const playerInMatch = games.players.find((player) => {
-  if (player.account_id == account_id) {
-    const hero_id = player.hero_id;
-    dotaApi.getHeroName(hero_id)
-    
-    return true;
-  }
-  return false;
+  return player.account_id == account_id;
 });
+    const heroName = await dotaApi.getHeroName(playerInMatch.hero_id);
+    console.log(heroName);
 
       gameHistory.innerHTML += `
         <div>
           <div>Match ID: ${games.match_id}</div>
-          <div>Hero ID: ${playerInMatch.hero_id}</div>
-          <div>Kills: ${playerInMatch.kills}</div>
-          <div>Deaths: ${playerInMatch.deaths}</div>
-          <div>Assists: ${playerInMatch.assists}</div>
+          <div>Hero: ${heroName}</div>
+          <div>KDA: ${playerInMatch.kills}/${playerInMatch.deaths}/${playerInMatch.assists}</div>
         </div>
         <br>
       `;
