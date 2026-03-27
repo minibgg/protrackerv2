@@ -31,6 +31,10 @@ const dotaApi = {
     const res = await fetch(`https://api.opendota.com/api/matches/${match_id}`)
     const data = await res.json();
     return data;
+  },
+  async getHeroName(hero_id){
+    const res = await fetch(`https://api.opendota.com/api/heroes`)
+    const data = await res.json();
   }
 
 }
@@ -94,7 +98,9 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
 
     const playerInMatch = games.players.find((player) => {
   if (player.account_id == account_id) {
-    console.log(player.hero_id);
+    const hero_id = player.hero_id;
+    dotaApi.getHeroName(hero_id)
+    
     return true;
   }
   return false;
