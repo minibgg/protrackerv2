@@ -36,7 +36,7 @@ const dotaApi = {
     const data = await res.json();
     const hero = data.find((hero) => hero.id == hero_id);
     return hero ? hero.localized_name : "Unknown hero";
-  }
+  }//ai
   }
 //получаем информацию о id
 const input = document.getElementById("steamid")
@@ -98,23 +98,27 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
       }
     };
 
-          async function PlayerRecentMatches(account_id){
+      async function PlayerRecentMatches(account_id){
   const data = await dotaApi.getRecentMatches(account_id);
 
   data.slice(0, 5).forEach(async (match) => {
     const games = await dotaApi.getMatchInfo(match.match_id);
-
     const playerInMatch = games.players.find((player) => {
   return player.account_id == account_id;
 });
-    const heroName = await dotaApi.getHeroName(playerInMatch.hero_id);
-    console.log(heroName);
+const playerWon =
+  (playerInMatch.isRadiant && games.radiant_win) ||
+  (!playerInMatch.isRadiant && !games.radiant_win);
 
+const gameResult = playerWon ? "Win" : "Lose";
+
+    const heroName = await dotaApi.getHeroName(playerInMatch.hero_id);
       gameHistory.innerHTML += `
         <div>
           <div>Match ID: ${games.match_id}</div>
           <div>Hero: ${heroName}</div>
           <div>KDA: ${playerInMatch.kills}/${playerInMatch.deaths}/${playerInMatch.assists}</div>
+          <div>Game result:${gameResult}</div>
         </div>
         <br>
       `;
