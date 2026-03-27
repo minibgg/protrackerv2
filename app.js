@@ -1,6 +1,5 @@
 'use strict'
 //получаем информацию о class
-let playerinfo = document.querySelectorAll(".baseinfo")
 const dotaApi = {
   async getAccountInfo(account_id){
     const res = await fetch(`https://api.opendota.com/api/players/${account_id}`);
@@ -10,9 +9,9 @@ const dotaApi = {
   async getWinLose(account_id){
     const res = await fetch(`https://api.opendota.com/api/players/${account_id}/wl`)
     const data = await res.json();  
-    const result = data.win + data.lose;
+    const total = data.win + data.lose;
     let winrate;
-    if (result == 0){
+    if (total == 0){
       winrate = "0%"
     } else {
       winrate = ((data.win / (data.win + data.lose)) * 100).toFixed(1) + "%";
@@ -82,8 +81,8 @@ document.querySelector('.searchbtn').addEventListener('click', function searchpl
 
     async function PlayerWinLose(account_id){
       const data = await dotaApi.getWinLose(account_id)
-      const result = data.win + data.lose;
-      if (result == 0) {
+      const total = data.win + data.lose;
+      if (total == 0) {
         wrjs.innerText = "игры не найдены";
       } else {
       wrjs.innerText = "WR: " + ((data.win / (data.win + data.lose)) * 100).toFixed(1) + "%";
