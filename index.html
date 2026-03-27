@@ -1,32 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="style.css"></link>
+  <!-- Кодировка нужна, чтобы текст и символы отображались без поломки. -->
   <meta charset="UTF-8">
-  <title>my second project</title>
-  <link rel="stylesheet" href="shiteater.css">
+  <!-- Viewport добавлен для корректного масштаба на телефонах и планшетах. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Более понятный заголовок вкладки вместо старого общего названия. -->
+  <title>Dota Player Snapshot</title>
+  <!-- Предподключение ускоряет загрузку внешнего шрифта. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <!-- Отдельное соединение для файлов шрифта с другого домена. -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Этот шрифт выбран, потому что он визуально ближе к референсу с картинки. -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Оставляем один рабочий CSS-файл, чтобы стиль был централизованным. -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="mainframe">
-    <div class="frameinfo">
-        <div class="framesteamid">
-        <input type="text" placeholder="steam id:" id="steamid" class="baseinfo"></input>
-        <button class="searchbtn">Search</button>
-<!--        <button class="updatebtn">Update</button>  -->
+  <!-- Фоновые свечения добавлены для глубины и атмосферы, как в примере. -->
+  <div class="ambient ambient-left"></div>
+  <div class="ambient ambient-right"></div>
+
+  <!-- Главная оболочка страницы ограничивает ширину и центрирует макет. -->
+  <main class="page-shell">
+    <!-- Верхний блок разбит на текст слева и поиск справа, как в референсе. -->
+    <section class="hero-layout">
+      <div class="hero-copy">
+        <!-- Маленькая подпись помогает визуально структурировать hero-блок. -->
+        <p class="eyebrow">Player Snapshot</p>
+        <!-- Крупный заголовок сделан главным акцентом страницы. -->
+        <h1 class="hero-title">Form, MMR, and latest match story in one clean view.</h1>
+        <!-- Подзаголовок поясняет пользователю, что делает сайт. -->
+        <p class="hero-text">
+          Paste a Steam account ID and get a sharper, easier-to-read snapshot of the profile and recent games.
+        </p>
+      </div>
+
+      <!-- Карточка поиска вынесена вправо, чтобы композиция была ближе к макету на изображении. -->
+      <div class="frameinfo search-card">
+        <div class="framesteamid search-row">
+          <!-- id="steamid" не меняем, потому что старый JS ищет именно этот элемент. -->
+          <input type="text" placeholder="234816423" id="steamid" class="baseinfo search-input">
+          <!-- Класс .searchbtn сохранён без изменений для совместимости со старым JS. -->
+          <button class="searchbtn">Search</button>
         </div>
-        <br>
-        <div class="profileframe">
-            <div id="steamavatar" class="frameavatar"></div>
-            <div class="secondframe">
-               <div id="player" class="baseinfo">player:</div>
-               <div id="mmr" class="baseinfo">mmr:</div>
-               <div id="tmmr" class="baseinfo">turbo mmr:</div>
-               <div id="wr" class="baseinfo">winrate</div>
-            </div>
+        <!-- Примеры добавлены, чтобы пользователю было проще понять формат ввода. -->
+        <p class="search-hint">Examples: 234816423, 873568882, 121893417</p>
+      </div>
+    </section>
+
+    <!-- Основная карточка профиля собрана в виде панели с аватаром и крупными метриками. -->
+    <section class="frameinfo profile-card">
+      <div class="profileframe">
+        <div class="profile-side">
+          <!-- id="steamavatar" оставлен, чтобы JS продолжал вставлять сюда картинку игрока. -->
+          <div id="steamavatar" class="frameavatar">
+            <span class="avatar-placeholder">NO IMAGE</span>
+          </div>
+          <!-- Декоративный статусный блок добавлен для сходства с референсом. -->
+          <div class="status-pill">
+            <span class="status-dot"></span>
+            <span>Profile loaded successfully</span>
+          </div>
         </div>
-    </div>
-    <div class="framehistory">
-            <div id="game1" class="framegame"></div>
-    </div>
-<script src="app.js"></script>
+
+        <div class="profile-main">
+          <!-- id="player" сохранён, а сам блок превращён в большой баннер имени. -->
+          <div id="player" class="baseinfo player-banner">Player name</div>
+
+          <!-- Сетка ниже повторяет карточки статистики из примера. -->
+          <div class="secondframe stats-grid">
+            <!-- id="mmr" оставлен без изменений для старого JS. -->
+            <div id="mmr" class="baseinfo stat-card">Estimated MMR</div>
+            <!-- id="tmmr" оставлен без изменений для старого JS. -->
+            <div id="tmmr" class="baseinfo stat-card">Turbo MMR</div>
+            <!-- id="wr" оставлен без изменений для старого JS. -->
+            <div id="wr" class="baseinfo stat-card">Win rate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Отдельная нижняя панель нужна для истории матчей в виде карточек. -->
+    <section class="framehistory matches-panel">
+      <div class="matches-header">
+        <div>
+          <p class="eyebrow">Recent Performance</p>
+          <h2 class="matches-title">Latest matches</h2>
+        </div>
+        <!-- Правый chip добавлен как декоративный элемент, похожий на макет. -->
+        <div class="matches-chip">5 recent games</div>
+      </div>
+
+      <!-- id="game1" и .framegame нельзя менять, потому что старый JS вставляет матчи сюда. -->
+      <div id="game1" class="framegame">
+        <div class="empty-card">Latest matches will appear here after search.</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Подключаем исходный JS без правок, как ты просил. -->
+  <script src="app.js"></script>
 </body>
 </html>

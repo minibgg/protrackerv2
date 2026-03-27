@@ -1,74 +1,408 @@
+:root {
+    /* Цветовые переменные вынесены сюда, чтобы весь дизайн было проще менять в одном месте. */
+    --bg: #07111d;
+    --bg-soft: #0b1626;
+    --panel: rgba(9, 20, 35, 0.88);
+    --panel-soft: rgba(18, 33, 54, 0.94);
+    --panel-muted: rgba(39, 58, 79, 0.95);
+    --border: rgba(101, 129, 164, 0.18);
+    --text: #f5f7fb;
+    --muted: #91a1b6;
+    --accent: #69efc5;
+    --chip: rgba(17, 31, 49, 0.96);
+    --shadow: 0 30px 90px rgba(0, 0, 0, 0.32);
+}
+
+* {
+    /* border-box делает размеры блоков более предсказуемыми при верстке. */
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    /* Новый шрифт делает страницу визуально ближе к примеру с изображения. */
+    font-family: "Space Grotesk", sans-serif;
+}
+
 .mainframe {
-    background-color: #1C242D;
-    font-size: 16px;
-    width: 100%;
-    height: 100%;
+    /* Относительное позиционирование нужно, чтобы фоновые эффекты жили внутри страницы. */
+    position: relative;
+    /* Скрываем горизонтальный скролл от декоративных свечений. */
+    overflow-x: hidden;
+    /* Градиенты заменяют плоский фон и дают глубину как у референса. */
+    background:
+        radial-gradient(circle at 15% 12%, rgba(70, 112, 178, 0.12), transparent 18%),
+        radial-gradient(circle at 78% 5%, rgba(105, 239, 197, 0.12), transparent 12%),
+        linear-gradient(180deg, #07111d 0%, #08111b 100%);
+    color: var(--text);
+    /* Внешние отступы добавлены, чтобы контент не прилипал к краям окна. */
+    padding: 24px 0 40px;
 }
-.frameinfo{
-    border: 2px solid #242F39;
-    padding: 15px 20px;
-    background-color: #242F39;
+
+.ambient {
+    /* Эти круги работают как мягкое свечение на фоне. */
+    position: fixed;
+    width: 18rem;
+    height: 18rem;
+    border-radius: 50%;
+    filter: blur(95px);
+    pointer-events: none;
+    opacity: 0.42;
 }
-.profileframe{
+
+.ambient-left {
+    top: 1rem;
+    left: -4rem;
+    background: rgba(62, 102, 170, 0.22);
+}
+
+.ambient-right {
+    top: -2rem;
+    right: 10rem;
+    background: rgba(105, 239, 197, 0.18);
+}
+
+.page-shell {
+    /* Контейнер ограничивает ширину, чтобы макет выглядел аккуратно на больших экранах. */
+    position: relative;
+    z-index: 1;
+    width: min(1180px, calc(100% - 36px));
+    margin: 0 auto;
+}
+
+.hero-layout {
+    /* Grid нужен, чтобы получить композицию "текст слева, поиск справа". */
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.8fr);
+    align-items: end;
+    gap: 26px;
+    margin-bottom: 20px;
+}
+
+.hero-copy {
+    padding: 6px 0;
+}
+
+.eyebrow {
+    /* Маленькая подпись помогает отделить секции и добавить стиль интерфейсу. */
+    margin: 0 0 14px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+}
+
+.hero-title {
+    /* Очень крупный заголовок повторяет главный приём из присланного примера. */
+    margin: 0;
+    max-width: 720px;
+    font-size: clamp(3rem, 6vw, 5.4rem);
+    line-height: 0.94;
+    letter-spacing: -0.06em;
+}
+
+.hero-text {
+    /* Более мягкий цвет делает подзаголовок вторичным относительно крупного H1. */
+    margin: 20px 0 0;
+    max-width: 620px;
+    color: #c3cfdd;
+    font-size: 1.05rem;
+    line-height: 1.55;
+}
+
+.frameinfo,
+.framehistory {
+    /* Общая карточная оболочка нужна для единого стиля всех крупных блоков. */
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+}
+
+.search-card {
+    /* Отступы внутри карточки поиска делают её визуально компактной и собранной. */
+    padding: 18px;
+    align-self: center;
+}
+
+.search-row {
+    /* Flex размещает input и кнопку в одну строку. */
     display: flex;
-    align-items: flex-start;
-    gap: 20px;
+    gap: 12px;
+    align-items: center;
 }
-.secondframe{
-    width: 90%;
-    height: 90%;
+
+.baseinfo {
+    /* Базовый вид карточек и полей нужен, чтобы элементы выглядели как одна система. */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--panel-soft);
+    color: var(--text);
+    border-radius: 18px;
+}
+
+.search-input {
+    /* Поле растягивается на всю ширину свободного места рядом с кнопкой. */
+    width: 100%;
+    min-width: 0;
+    padding: 18px 20px;
+    font: inherit;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.search-input::placeholder {
+    color: #6f8198;
+}
+
+.search-input:focus {
+    /* Подсветка фокуса нужна, чтобы пользователь видел активное поле. */
+    border-color: rgba(105, 239, 197, 0.5);
+    background: rgba(13, 24, 40, 0.98);
+}
+
+.searchbtn {
+    /* Кнопка получила яркий градиент, чтобы стать главным CTA-элементом. */
+    appearance: none;
+    border: none;
+    border-radius: 18px;
+    padding: 18px 30px;
+    background: linear-gradient(135deg, #75f1c7 0%, #5fd5d4 100%);
+    color: #03131c;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchbtn:hover {
+    /* Лёгкий подъём при hover добавляет ощущение живого интерфейса. */
+    transform: translateY(-1px);
+    box-shadow: 0 14px 28px rgba(95, 213, 212, 0.18);
+}
+
+.search-hint {
+    /* Подсказка примеров специально сделана менее контрастной, чтобы не спорить с формой. */
+    margin: 14px 2px 0;
+    color: #7f90a5;
+    font-size: 0.92rem;
+}
+
+.profile-card {
+    /* Внутренний воздух помогает карточке профиля не выглядеть тесной. */
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.profileframe {
+    /* Здесь grid делит панель профиля на колонку аватара и основную информацию. */
+    display: grid;
+    grid-template-columns: 176px minmax(0, 1fr);
+    gap: 18px;
+    align-items: stretch;
+}
+
+.profile-side {
+    /* Левая часть складывает аватар и статус друг под другом. */
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
+    gap: 12px;
 }
-.baseinfo{
-    border: 6px solid #1C242D;
-    padding: 8px 4px;
-    display: flex;
-    width: 417px;
-    background-color: #242F39;
-    color: #9aa6b2;
+
+.frameavatar {
+    /* Фиксированный размер делает блок аватара похожим на карточку из примера. */
+    width: 176px;
+    height: 176px;
+    border-radius: 22px;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    background: #f4f5f7;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
-.baseinfo::placeholder{
-    color: #9aa6b2;
+
+.frameavatar img {
+    /* object-fit нужен, чтобы загруженный аватар заполнял рамку без искажения. */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
-.framesteamid{
+
+.avatar-placeholder {
+    color: #73839b;
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+}
+
+.status-pill {
+    /* Эта плашка повторяет маленький статусный блок под аватаром из референса. */
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(18, 31, 47, 0.88);
+    color: #dbe6f2;
+    font-size: 0.95rem;
 }
-.searchbtn{
-    appearance: none;
-    border: 6px solid #1C242D;
-    background-color: #242F39;
-    color: #9aa6b2;
-    cursor: pointer;
-    padding: 8px 4px;
+
+.status-dot {
+    /* Светящаяся точка усиливает ощущение "успешно загружено". */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 14px rgba(105, 239, 197, 0.6);
+    flex-shrink: 0;
 }
-.searchbtn:hover{
-    background-color: #435260;
+
+.profile-main {
+    /* Правая часть профиля выстраивает имя и статистику вертикально. */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
-.updatebtn{
-    appearance: none;
-    border: 8px solid #1C242D;
-    background-color: #242F39;
-    color: #9aa6b2;
-    cursor: pointer;
-    padding: 8px 4px;
-}
-.updatebtn:hover{
-    background-color: #435260;
-}
-.framegame{
-    margin-top: 20px;
-    color: #9aa6b2;
-    border: 2px solid #242F39;
-    padding: 15px 20px;
-    background-color: #242F39;
-}
-.frameavatar{
-    border: 6px solid #1C242D;
-    min-width: 128px;
+
+.player-banner {
+    /* Широкий баннер имени заменяет скучный текстовый div на заметный крупный блок. */
     min-height: 128px;
+    padding: 24px 28px;
+    align-items: end;
+    display: flex;
+    background: linear-gradient(135deg, #213b4c 0%, #2b3441 100%);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stats-grid {
+    /* Три колонки повторяют нижний ряд метрик из примера. */
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    align-items: stretch;
+}
+
+.stat-card {
+    /* Эти карточки дают MMR, turbo MMR и win rate одинаковую визуальную важность. */
+    min-height: 104px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    color: #d9e4ef;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.matches-panel {
+    /* Отступы внутри панели матчей отделяют заголовок от карточек. */
+    padding: 20px;
+}
+
+.matches-header {
+    /* Верхняя строка разводит заголовок и правый chip по краям. */
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.matches-title {
+    margin: 0;
+    font-size: clamp(2rem, 3vw, 2.6rem);
+    line-height: 1;
+}
+
+.matches-chip {
+    /* Капсула справа добавлена как декоративный элемент в стиле макета. */
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: var(--chip);
+    color: #c5d0de;
+    font-size: 0.96rem;
+}
+
+.framegame {
+    /* Контейнер матчей сделан grid-сеткой, чтобы вставленные JS-ом блоки сразу выглядели карточками. */
+    margin-top: 0;
+    color: var(--text);
+    border: none;
+    padding: 0;
+    background: transparent;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.framegame > div {
+    /* Каждый div матча получает рамку, фон и скругление как у карточек из референса. */
+    min-height: 160px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 22px;
+    padding: 16px;
+    background: linear-gradient(180deg, rgba(22, 37, 58, 0.98) 0%, rgba(18, 30, 46, 0.98) 100%);
+    color: #d7e2ef;
+}
+
+.framegame > br {
+    /* Старый JS добавляет <br>, поэтому скрываем их стилем, не меняя JS. */
+    display: none;
+}
+
+.empty-card {
+    /* Пустое состояние центрируется, чтобы блок не выглядел сломанным до первого поиска. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--muted);
+}
+
+@media (max-width: 900px) {
+    /* На планшетах переводим верхние сетки в одну колонку. */
+    .hero-layout,
+    .profileframe {
+        grid-template-columns: 1fr;
+    }
+
+    .search-card {
+        max-width: 100%;
+    }
+
+    .frameavatar {
+        width: 176px;
+    }
+}
+
+@media (max-width: 640px) {
+    /* На телефонах сужаем контейнер и перестраиваем ряды вертикально. */
+    .page-shell {
+        width: min(100% - 20px, 1180px);
+    }
+
+    .mainframe {
+        padding: 18px 0 28px;
+    }
+
+    .search-row,
+    .matches-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .searchbtn {
+        width: 100%;
+    }
 }
