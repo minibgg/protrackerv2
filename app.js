@@ -110,18 +110,21 @@ const playerWon =
   (playerInMatch.isRadiant && games.radiant_win) ||
   (!playerInMatch.isRadiant && !games.radiant_win);
 
-const gameResult = playerWon ? "Win" : "Lose";
+const gameResult = playerWon ? "Victory" : "Defeat";
+const resultClass = playerWon ? "result-win" : "result-lose";
 
-    const heroName = await dotaApi.getHeroName(playerInMatch.hero_id);
-      gameHistory.innerHTML += `
-        <div>
-          <div>Match ID: ${games.match_id}</div>
-          <div>Hero: ${heroName}</div>
-          <div>KDA: ${playerInMatch.kills}/${playerInMatch.deaths}/${playerInMatch.assists}</div>
-          <div>Game result:${gameResult}</div>
-        </div>
-        <br>
-      `;
+const heroName = await dotaApi.getHeroName(playerInMatch.hero_id);
+gameHistory.innerHTML += `
+  <div>
+    <div>Match ID: ${games.match_id}</div>
+    <div>Hero: ${heroName}</div>
+    <div>KDA: ${playerInMatch.kills}/${playerInMatch.deaths}/${playerInMatch.assists}</div>
+    <div>
+      <span class="match-result ${resultClass}">${gameResult}</span>
+    </div>
+  </div>
+  <br>
+`;
     });
   }
 });

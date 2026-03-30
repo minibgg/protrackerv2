@@ -1,32 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="style.css"></link>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
   <meta charset="UTF-8">
   <title>my second project</title>
   <link rel="stylesheet" href="shiteater.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body class="mainframe">
-    <div class="frameinfo">
-        <div class="framesteamid">
-        <input type="text" placeholder="steam id:" id="steamid" class="baseinfo"></input>
+    <div class="intro"></div>
+    <div class="intro"></div>
+<div class="frameinfo">
+    <div class="framesteamid">
+        <input type="text" placeholder="steam id:" id="steamid" class="baseinfo">
         <button class="searchbtn">Search</button>
-<!--        <button class="updatebtn">Update</button>  -->
-        </div>
-        <br>
-        <div class="profileframe">
-            <div id="steamavatar" class="frameavatar"></div>
-            <div class="secondframe">
-               <div id="player" class="baseinfo">player:</div>
-               <div id="mmr" class="baseinfo">mmr:</div>
-               <div id="tmmr" class="baseinfo">turbo mmr:</div>
-               <div id="wr" class="baseinfo">winrate</div>
+    </div>
+
+    <br>
+
+    <div class="profileframe">
+        <div id="steamavatar" class="frameavatar"></div>
+
+        <div class="secondframe">
+            <div id="player" class="player-name">Player Name</div>
+            <div class="stats-grid">
+                <div id="mmr" class="stat-box">MMR: -</div>
+                <div id="tmmr" class="stat-box">Turbo MMR: -</div>
+                <div id="wr" class="stat-box">Winrate: -</div>
             </div>
         </div>
     </div>
-    <div class="framehistory">
-            <div id="game1" class="framegame"></div>
+</div>
+<div class="framehistory">
+    <div class="history-header">
+        <div>
+            <span class="sub-label">Recent Performance</span>
+            <h2>Latest matches</h2>
+        </div>
+        <div class="history-meta">
+            <p class="history-note">Search a player to load the latest five games with KDA and result.</p>
+            <div class="result-legend">
+                <span class="match-result result-win">Victory</span>
+                <span class="match-result result-lose">Defeat</span>
+            </div>
+        </div>
     </div>
+    <div id="game1" class="framegame"></div>
+</div>
 <script src="app.js"></script>
 </body>
 </html>
