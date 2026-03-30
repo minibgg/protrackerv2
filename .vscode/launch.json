@@ -5,7 +5,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Открыть Dota Stats",
-            "file": "${workspaceFolder}/index.html"
+            "file": "${workspaceFolder}/match.html"
         }
     ]
 }
