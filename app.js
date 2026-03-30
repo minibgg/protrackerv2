@@ -101,7 +101,7 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
       async function PlayerRecentMatches(account_id){
   const data = await dotaApi.getRecentMatches(account_id);
 
-  data.slice(0, 5).forEach(async (match) => {
+  data.slice(0, 8).forEach(async (match) => {
     const games = await dotaApi.getMatchInfo(match.match_id);
     const playerInMatch = games.players.find((player) => {
   return player.account_id == account_id;

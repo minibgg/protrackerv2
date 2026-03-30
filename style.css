@@ -424,6 +424,9 @@ body {
     font-weight: 800;
     color: var(--text);
     line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .framegame > div:not(.match-card) > div:nth-child(3),
@@ -443,6 +446,8 @@ body {
 .framegame > div:not(.match-card) > div:nth-child(3)::before {
     content: "Performance";
     color: #c7d2de;
+    flex-shrink: 0;
+    margin-right: 12px;
 }
 
 .framegame > div:not(.match-card) > div:nth-child(4)::before {
@@ -459,6 +464,12 @@ body {
     color: var(--text);
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+}
+
+.framegame > div:not(.match-card) > div:nth-child(3) {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .framegame > br {
