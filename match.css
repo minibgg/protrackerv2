@@ -9,7 +9,7 @@ body {
 
 body {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 24px;
 }
@@ -34,6 +34,47 @@ body {
     line-height: 1.6;
 }
 
+#matchDetails > div:not(.players-list) {
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    background: #223041;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: #f3f6fa;
+    font-weight: 600;
+}
+
+.players-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.player-card {
+    display: grid;
+    gap: 10px;
+    padding: 18px;
+    background: #223041;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+}
+
+.player-card > div {
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    color: #f3f6fa;
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+.player-card > div:nth-child(1),
+.player-card > div:nth-child(2),
+.player-card > div:nth-child(3) {
+    font-weight: 700;
+}
+
 .match-page a {
     color: #7af5b1;
     text-decoration: none;
@@ -42,4 +83,22 @@ body {
 
 .match-page a:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+    body {
+        padding: 14px;
+    }
+
+    .match-page {
+        padding: 16px;
+    }
+
+    .match-page h1 {
+        font-size: 26px;
+    }
+
+    .players-list {
+        grid-template-columns: 1fr;
+    }
 }
