@@ -44,13 +44,17 @@ const mmrjs = document.getElementById("mmr");
 const tmmrjs = document.getElementById("tmmr");
 const wrjs = document.getElementById("wr");
 const gameHistory = document.querySelector(".framegame")
+const heroesName = [];
 //ожидание клика и после код
+if (heroesName == false){
+  console.log('123')
+}
 document.querySelector('.searchbtn').addEventListener('click', async function searchplayer() {
 
   let account_id = input.value.trim()
     if (!input.value){
-       alert("нерпавельный Id")
-       return;
+      alert("нерпавельный Id")
+      return;
     }
       try {
     await Promise.all([
