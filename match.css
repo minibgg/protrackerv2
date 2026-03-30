@@ -1,0 +1,45 @@
+html,
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Inter", sans-serif;
+    background: linear-gradient(180deg, #16202d 0%, #0b1118 100%);
+    color: #f3f6fa;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.match-page {
+    width: min(100%, 900px);
+    padding: 24px;
+    background: #18222f;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.match-page h1 {
+    margin: 0 0 16px;
+    font-size: 32px;
+}
+
+#matchDetails {
+    margin-bottom: 18px;
+    color: #9eb0c2;
+    line-height: 1.6;
+}
+
+.match-page a {
+    color: #7af5b1;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.match-page a:hover {
+    text-decoration: underline;
+}
