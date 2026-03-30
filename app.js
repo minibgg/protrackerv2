@@ -31,12 +31,11 @@ const dotaApi = {
     const data = await res.json();
     return data;
   },
-  async getHeroName(hero_id){//ai changed
-    const res = await fetch(`https://api.opendota.com/api/heroes`);
-    const data = await res.json();
-    const hero = data.find((hero) => hero.id == hero_id);
-    return hero ? hero.localized_name : "Unknown hero";
-  }//ai
+async getHeroes(){
+  const res = await fetch(`https://api.opendota.com/api/heroes`);
+  const data = await res.json();
+  return data;
+}
   }
 //получаем информацию о id
 const input = document.getElementById("steamid")
@@ -100,12 +99,16 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
 
       async function PlayerRecentMatches(account_id){
   const data = await dotaApi.getRecentMatches(account_id);
+  const heroes = await dotaApi.getHeroes();
+
 
   data.slice(0, 8).forEach(async (match) => {
     const games = await dotaApi.getMatchInfo(match.match_id);
     const playerInMatch = games.players.find((player) => {
   return player.account_id == account_id;
 });
+  const hero = heroes.find((hero) => hero.id == playerInMatch.hero_id);
+  const heroName = hero ? hero.localized_name : "Unknown hero";
 const playerWon =
   (playerInMatch.isRadiant && games.radiant_win) ||
   (!playerInMatch.isRadiant && !games.radiant_win);
@@ -113,7 +116,7 @@ const playerWon =
 const gameResult = playerWon ? "Victory" : "Defeat";
 const resultClass = playerWon ? "result-win" : "result-lose";
 
-const heroName = await dotaApi.getHeroName(playerInMatch.hero_id);
+
 gameHistory.innerHTML += `
   <div>
     <div>Match ID: ${games.match_id}</div>
