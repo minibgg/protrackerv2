@@ -118,15 +118,16 @@ const resultClass = playerWon ? "result-win" : "result-lose";
 
 
 gameHistory.innerHTML += `
-  <div>
-    <div>Match ID: ${games.match_id}</div>
-    <div>Hero: ${heroName}</div>
-    <div>KDA: ${playerInMatch.kills}/${playerInMatch.deaths}/${playerInMatch.assists}</div>
+  <a href="match.html?id=${games.match_id}" class="match-link">
     <div>
-      <span class="match-result ${resultClass}">${gameResult}</span>
+      <div>Match ID: ${games.match_id}</div>
+      <div>Hero: ${heroName}</div>
+      <div>KDA: ${playerInMatch.kills}/${playerInMatch.deaths}/${playerInMatch.assists}</div>
+      <div>
+        <span class="match-result ${resultClass}">${gameResult}</span>
+      </div>
     </div>
-  </div>
-  <br>
+  </a>
 `;
     });
   }

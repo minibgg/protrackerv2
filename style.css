@@ -27,8 +27,6 @@ html {
 }
 
 body {
-    overflow-x: hidden;
-    overflow-y: auto;
     margin: 0;
     font-family: "Inter", sans-serif;
     color: var(--text);
@@ -50,7 +48,7 @@ body {
     align-items: center;
     padding: 48px 20px 72px;
     overflow-x: hidden;
-    overflow-y: visible;
+    overflow-y: auto;
 }
 
 .mainframe::before,
