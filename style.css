@@ -1,362 +1,103 @@
 :root {
-    --bg: #0f1720;
-    --panel: #18222f;
-    --panel-light: #223041;
-    --border: rgba(255, 255, 255, 0.08);
-    --text: #f3f6fa;
-    --muted: #9eb0c2;
-    --accent: #7af5b1;
-    --win: #7af5b1;
-    --lose: #ff8b97;
+  --bg: #0F172A;
+  --surface: #162033;
+  --surface-2: #1E2B44;
+  --text: #E5E7EB;
+  --text-muted: #94A3B8;
+  --primary: #38BDF8;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --accent: #8B5CF6;
 }
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
+html, body{
+    height: 100%;
     margin: 0;
-    font-family: "Inter", sans-serif;
-    color: var(--text);
-    background: linear-gradient(180deg, #16202d 0%, #0b1118 100%);
 }
-
-.mainframe {
-    min-height: 100vh;
+body {
+    margin: 0px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 32px 16px 48px;
-    overflow-x: hidden;
+    background: linear-gradient(
+    90deg,
+    var(--bg),
+    var(--surface),
+    var(--surface-2)
+    )
 }
-
-.intro {
-    display: none;
-}
-
-.frameinfo,
-.framehistory {
-    width: min(100%, 1040px);
-    background: var(--panel);
-    border: 1px solid var(--border);
+.frameinfo{
+    border: 1px solid rgba(148, 163, 184, 0.25);
     border-radius: 20px;
-    padding: 24px;
-}
-
-.frameinfo {
-    margin-bottom: 20px;
-}
-
-.framesteamid {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.baseinfo {
-    flex: 1;
-    min-width: 0;
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: #101823;
+    height: 500px;
+    width: 700px;
+    margin-top: 20px;
+    margin-bottom: 10px;
     color: var(--text);
-    font-size: 15px;
-    outline: none;
 }
-
-.baseinfo::placeholder {
-    color: #74879b;
+.stat-box{
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 20px;
+    background: #121A2B;
+    padding: 20px;
+    margin: 5px 10px;
 }
-
-.baseinfo:focus {
-    border-color: rgba(122, 245, 177, 0.5);
+.framesteamid{
+    margin: 10px 20px;
+    border: 1px solid #0B1220 ;
+    padding: 10px;
+    border-radius: 10px;
+    background: radial-gradient(
+        circle at center,
+        var(--bg),
+        var(--surface),
+        var(--surface-2)
+    );
 }
-
-.searchbtn {
-    padding: 14px 20px;
-    border: none;
-    border-radius: 12px;
-    background: var(--accent);
-    color: #091018;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.profileframe {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-    background: var(--panel-light);
-    border-radius: 18px;
-    padding: 24px;
-}
-
 .frameavatar {
     width: 120px;
     height: 120px;
-    flex-shrink: 0;
-    overflow: hidden;
-    border-radius: 18px;
-    background: #101823;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 20px;
+    background: #121A2B;
+    padding: 10px;
+    margin: 5px 10px;
 }
-
 .frameavatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-}
-
-.secondframe {
-    flex: 1;
-    min-width: 0;
-}
-
-.player-name {
-    margin-bottom: 18px;
-    font-size: clamp(28px, 4vw, 38px);
-    font-weight: 800;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-}
-
-.stat-box {
-    min-height: 84px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    border-radius: 14px;
-    background: #101823;
-    border: 1px solid var(--border);
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.history-header {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 18px;
-}
-
-.sub-label {
-    display: inline-block;
-    margin-bottom: 8px;
-    color: var(--accent);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-}
-
-.history-header h2 {
-    margin: 0;
-    font-size: 28px;
-}
-
-.history-note {
-    margin: 0 0 10px;
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.5;
-    text-align: right;
-}
-
-.history-meta {
-    max-width: 360px;
-}
-
-.result-legend {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 8px;
-}
-
-.framegame {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-}
-
-.framegame:empty {
-    min-height: 160px;
-    display: grid;
-    place-items: center;
-    border: 1px dashed var(--border);
-    border-radius: 16px;
-    color: var(--muted);
-}
-
-.framegame:empty::before {
-    content: "Match history will appear here after search";
-}
-
-.match-link {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-}
-
-.framegame > .match-link > div,
-.framegame > div {
-    min-height: 190px;
-    display: grid;
-    gap: 10px;
-    align-content: start;
-    padding: 18px;
-    border-radius: 16px;
-    background: var(--panel-light);
-    border: 1px solid var(--border);
-    transition: transform 0.15s ease, border-color 0.15s ease;
-}
-
-.framegame > .match-link:hover > div,
-.framegame > div:hover {
-    transform: translateY(-2px);
-    border-color: rgba(122, 245, 177, 0.35);
-}
-
-.framegame > .match-link > div > div:first-child,
-.framegame > div > div:first-child {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.framegame > .match-link > div > div:first-child::after,
-.framegame > div > div:first-child::after {
-    content: "Match";
-    padding: 4px 8px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.06);
-    color: var(--text);
-    font-size: 10px;
-}
-
-.framegame > .match-link > div > div:nth-child(2),
-.framegame > div > div:nth-child(2) {
-    font-size: 20px;
-    font-weight: 800;
-}
-
-.framegame > .match-link > div > div:nth-child(3),
-.framegame > .match-link > div > div:nth-child(4),
-.framegame > div > div:nth-child(3),
-.framegame > div > div:nth-child(4) {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 10px 12px;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--muted);
-    font-size: 13px;
 }
-
-.framegame > .match-link > div > div:nth-child(3)::before,
-.framegame > div > div:nth-child(3)::before {
-    content: "Performance";
+#steamid {
+    background-color: #121A2B;
+    color: #E5E7EB;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 12px;
+    padding: 12px 16px;
+    width: 260px;
+    font-size: 15px;
+    transition: 0.2s ease;
+    outline: none;
 }
-
-.framegame > .match-link > div > div:nth-child(4)::before,
-.framegame > div > div:nth-child(4)::before {
-    content: "Result";
+#steamid::placeholder {
+    color: #94A3B8;
 }
-
-.framegame > .match-link > div > div:nth-child(4),
-.framegame > div > div:nth-child(4) {
-    margin-top: auto;
+#steamid:focus {
+    border-color: #38BDF8;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
 }
-
-.match-result {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 28px;
-    padding: 6px 12px;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
+.searchbtn{
+    background-color: #0F172A;
+    color: var(--text);
+    border: 1px solid #0B1220;
+    border-radius: 5px;
+    cursor: pointer;
 }
-
-.result-win {
-    color: var(--win);
-    background: rgba(122, 245, 177, 0.12);
-    border-color: rgba(122, 245, 177, 0.22);
-}
-
-.result-lose {
-    color: var(--lose);
-    background: rgba(255, 139, 151, 0.12);
-    border-color: rgba(255, 139, 151, 0.22);
-}
-
-@media (max-width: 840px) {
-    .framesteamid,
-    .profileframe,
-    .history-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .searchbtn {
-        width: 100%;
-    }
-
-    .history-note,
-    .result-legend {
-        text-align: left;
-        justify-content: flex-start;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 520px) {
-    .mainframe {
-        padding: 20px 12px 36px;
-    }
-
-    .frameinfo,
-    .framehistory,
-    .profileframe {
-        padding: 16px;
-    }
-
-    .frameavatar {
-        width: 100px;
-        height: 100px;
-    }
-
-    .framegame,
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
+.framehistory {
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 20px;
+    background: #121A2B;
+    padding: 20px;
+    margin-top: 20px;
 }
