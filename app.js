@@ -100,6 +100,7 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
       async function PlayerRecentMatches(account_id){
   const data = await dotaApi.getRecentMatches(account_id);
   const heroes = await dotaApi.getHeroes();
+  gameHistory.innerHTML = "";
 
 
   data.slice(0, 8).forEach(async (match) => {
@@ -119,11 +120,13 @@ const resultClass = playerWon ? "result-win" : "result-lose";
 
 gameHistory.innerHTML += `
   <a href="match.html?id=${games.match_id}" class="match-link">
-    <div>
-      <div>Match ID: ${games.match_id}</div>
-      <div>Hero: ${heroName}</div>
-      <div>KDA: ${playerInMatch.kills}/${playerInMatch.deaths}/${playerInMatch.assists}</div>
-      <div>
+    <div class="match-card">
+      <div class="match-main">
+        <div class="match-id">Match ID: ${games.match_id}</div>
+        <div class="match-hero">Hero: ${heroName}</div>
+      </div>
+      <div class="match-side">
+        <div class="match-kda">KDA: ${playerInMatch.kills}/${playerInMatch.deaths}/${playerInMatch.assists}</div>
         <span class="match-result ${resultClass}">${gameResult}</span>
       </div>
     </div>
