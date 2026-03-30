@@ -1,15 +1,15 @@
-const http = require('http');//all this ai
+const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3000;
 const HOST = '127.0.0.1';
+const PORT = 3000;
 const ROOT_DIR = __dirname;
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
-  '.js': 'application/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
@@ -18,25 +18,20 @@ const MIME_TYPES = {
   '.ico': 'image/x-icon'
 };
 
-function sendJson(res, statusCode, payload) {
-  res.writeHead(statusCode, {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type'
-  });
-  res.end(JSON.stringify(payload));
+function sendText(res, statusCode, text) {
+  res.writeHead(statusCode, { 'Content-Type': 'text/plain; charset=utf-8' });
+  res.end(text);
 }
 
 function sendFile(res, filePath) {
   fs.readFile(filePath, (error, data) => {
     if (error) {
       if (error.code === 'ENOENT') {
-        sendJson(res, 404, { error: 'File not found' });
+        sendText(res, 404, 'File not found');
         return;
       }
 
-      sendJson(res, 500, { error: 'Failed to read file' });
+      sendText(res, 500, 'Failed to read file');
       return;
     }
 
@@ -48,79 +43,47 @@ function sendFile(res, filePath) {
   });
 }
 
-function resolveStaticPath(urlPath) {
-  const requestedPath = urlPath === '/' ? '/index.html' : urlPath;
-  const normalizedPath = path.normalize(requestedPath).replace(/^(\.\.[/\\])+/, '');
+function resolveRequestPath(urlPath) {
+  if (urlPath === '/') {
+    return path.join(ROOT_DIR, 'index.html');
+  }
+
+  const normalizedPath = path.normalize(urlPath).replace(/^(\.\.(\/|\\|$))+/, '');
   return path.join(ROOT_DIR, normalizedPath);
 }
 
-async function handleRefresh(req, res, accountId) {
-  if (!/^\d+$/.test(accountId)) {
-    sendJson(res, 400, { error: 'account_id must contain only digits' });
+const server = http.createServer((req, res) => {
+  if (req.method !== 'GET') {
+    sendText(res, 405, 'Method not allowed');
     return;
   }
 
-  try {
-    const apiResponse = await fetch(`https://api.opendota.com/api/players/${accountId}/refresh`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
+  const url = new URL(req.url, `http://${HOST}:${PORT}`);
+  const filePath = resolveRequestPath(url.pathname);
 
-    const text = await apiResponse.text();
-    let data;
+  if (!filePath.startsWith(ROOT_DIR)) {
+    sendText(res, 403, 'Forbidden');
+    return;
+  }
 
-    try {
-      data = text ? JSON.parse(text) : {};
-    } catch {
-      data = { raw: text };
+  fs.stat(filePath, (error, stats) => {
+    if (error) {
+      sendText(res, 404, 'File not found');
+      return;
     }
 
-    sendJson(res, apiResponse.status, data);
-  } catch (error) {
-    sendJson(res, 500, {
-      error: 'Failed to reach OpenDota',
-      details: error.message
-    });
-  }
-}
-
-const server = http.createServer(async (req, res) => {
-  const url = new URL(req.url, `http://${req.headers.host}`);
-
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
-    });
-    res.end();
-    return;
-  }
-
-  if (req.method === 'POST' && url.pathname.startsWith('/api/refresh/')) {
-    const accountId = url.pathname.split('/').pop();
-    await handleRefresh(req, res, accountId);
-    return;
-  }
-
-  if (req.method === 'GET') {
-    const filePath = resolveStaticPath(url.pathname);
-
-    if (!filePath.startsWith(ROOT_DIR)) {
-      sendJson(res, 403, { error: 'Forbidden' });
+    if (stats.isDirectory()) {
+      const indexPath = path.join(filePath, 'index.html');
+      sendFile(res, indexPath);
       return;
     }
 
     sendFile(res, filePath);
-    return;
-  }
-
-  sendJson(res, 405, { error: 'Method not allowed' });
+  });
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`Server started at http://${HOST}:${PORT}`);
-  console.log(`Refresh endpoint: POST http://${HOST}:${PORT}/api/refresh/<account_id>`);
+  console.log(`Server started: http://${HOST}:${PORT}`);
+  console.log(`Main page: http://${HOST}:${PORT}/`);
+  console.log(`Match page example: http://${HOST}:${PORT}/match.html?id=1234567890`);
 });
