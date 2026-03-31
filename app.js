@@ -1,5 +1,6 @@
 'use strict'
 //получаем информацию о class
+
 const dotaApi = {
   async getAccountInfo(account_id){
     const res = await fetch(`https://api.opendota.com/api/players/${account_id}`);
@@ -119,21 +120,11 @@ const matchPromises = data.slice(0, 8).map(match =>
 // allMatches = [данныеМатча1, данныеМатча2, данныеМатча3, ...]
 const allMatches = await Promise.all(matchPromises);
 
-// теперь forEach — здесь он уже безопасен, потому что
-// все данные уже загружены и лежат в allMatches по порядку
 allMatches.forEach(games => {
-    // находим себя среди игроков матча
     const playerInMatch = games.players.find(player => player.account_id == account_id);
-    
-    // находим героя по id
     const hero = heroes.find(hero => hero.id == playerInMatch.hero_id);
-    
-    // если герой найден берём его имя, иначе пишем "Unknown hero"
     const heroName = hero ? hero.localized_name : "Unknown hero";
     
-    // определяем победил ли игрок:
-    // если игрок за Radiant И Radiant победил — победа
-    // если игрок за Dire И Radiant проиграл — тоже победа
     const playerWon =
         (playerInMatch.isRadiant && games.radiant_win) ||
         (!playerInMatch.isRadiant && !games.radiant_win);
@@ -164,3 +155,4 @@ allMatches.forEach(games => {
 //873568882
 //1315428024
 //121893417
+
