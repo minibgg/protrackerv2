@@ -34,13 +34,14 @@ try{
 
             const players = matchData.players;
 
-        const playersList = players.map(player => {
+        const playersList = players.map(player => {//ии часть, понять что происходит
     const hero = heroes.find(h => h.id === player.hero_id);
     const heroName = hero ? hero.localized_name : `Неизвестный герой (id: ${player.hero_id})`;
     const teamName = player.isRadiant ? 'Radiant' : 'Dire';
+    const KDA = player.kills + `/` + player.deaths + `/` + player.assists
 
-    return `<li>${heroName} - ${teamName}</li>`;
-}).join('');
+    return `<li>${heroName} - ${teamName}   ${KDA}</li>`;
+}).join('');//до
 
 
     matchDetails.innerHTML = `
