@@ -1,3 +1,20 @@
+:root {
+  --bg: #09111f;
+  --surface: #0f1b31;
+  --surface-2: #172742;
+  --panel: #12203a;
+  --panel-soft: #182947;
+  --text: #e8eef8;
+  --text-muted: #9fb0c9;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --accent: #60a5fa;
+  --border: rgba(148, 163, 184, 0.18);
+  --border-strong: rgba(96, 165, 250, 0.35);
+}
 html, body{
     height: 100%;
     margin: 0;
@@ -16,4 +33,31 @@ body {
     );
     color: var(--text);
     font-family: "Inter", sans-serif;
+}
+.match-page{
+    border:  2px solid var(--panel);
+    border-radius: 10px;
+    padding: 10px 15px;
+    padding-bottom: 40px;
+    background-color: var(--panel-soft);
+}
+.returnBtn{
+    background: linear-gradient(180deg, var(--primary), var(--primary-hover));
+    color: var(--text);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    border-radius: 10px;
+    margin: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.returnBtn:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px rgba(37, 99, 235, 0.28);
+    filter: brightness(1.06);
+}
+.playerList{
+    border: 2px solid black;
 }

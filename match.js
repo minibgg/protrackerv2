@@ -46,7 +46,7 @@ try{
 
     matchDetails.innerHTML = `
             <h2>ID матча: ${matchData.match_id}</h2>
-            <ul>
+            <ul class="playerList">
                 ${playersList}
             </ul>
     `;
