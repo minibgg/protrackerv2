@@ -47,7 +47,10 @@ try{
     const KDA = player.kills + `/` + player.deaths + `/` + player.assists
     const profileName = player.personaname || `Игрок ${player.accound_id ?? 'unknown'}`
     const GPM = "GPM:" + player.gold_per_min;
-    const XPM = "XPM:" + player.xp_per_min
+    const XPM = "XPM:" + player.xp_per_min;
+
+    const heroShortName = hero ? hero.name.replace('npc_dota_hero_', '') : 'unknown';
+    const heroIconUrl = `https://cdn.akamai.steamstatic.com/apps/dota2/images/dota_react/heroes/${heroShortName}.png`;
     
     const itemSlots = [
     player.item_0,
@@ -66,7 +69,7 @@ const itemIcons = itemSlots
     if (!item) {
     return '';
     }
-
+//от
     return `
     <img
         class="item-icon"
@@ -74,16 +77,28 @@ const itemIcons = itemSlots
         alt="${item.dname}"
         title="${item.dname}"
     >
-    `;
+    `;//до
 })
 .join('');
 
 
-    return `
-  <li>
-    ${profileName} (${heroName}) ${teamName} ${KDA} ${GPM} ${XPM}
+return `
+  <li class="player-card">
+    <div class="player-header">
+      <img
+        class="hero-icon"
+        src="${heroIconUrl}"
+        alt="${heroName}"
+        title="${heroName}"
+      >
+      <div class="player-info">
+        <div>${profileName} (${heroName})</div>
+        <div>${teamName} ${KDA}</div>
+      </div>
+    </div>
+
     <div class="items-row">
-    ${itemIcons}
+      ${itemIcons}
     </div>
   </li>
 `;

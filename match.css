@@ -58,9 +58,11 @@ body {
     box-shadow: 0 12px 26px rgba(37, 99, 235, 0.28);
     filter: brightness(1.06);
 }
-/*.playerList{
-    border: 2px solid black;
-}*/
+.playerList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 .items-row {
     display: flex;
     gap: 6px;
@@ -74,3 +76,25 @@ body {
     border-radius: 6px;
     border: 1px solid rgba(255, 255, 255, 0.12);
 }
+.player-card {
+    margin-bottom: 16px;
+    list-style: none;
+}
+.player-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.player-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.hero-icon {
+    width: 64px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
