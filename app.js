@@ -107,36 +107,56 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
   gameHistory.innerHTML = "";
 
 
-  data.slice(0, 8).forEach(async (match) => {
-    const games = await dotaApi.getMatchInfo(match.match_id);
-    const playerInMatch = games.players.find((player) => {
-  return player.account_id == account_id;
+  // .map() проходит по каждому матчу и ВОЗВРАЩАЕТ промис (запрос к API)
+// в отличие от forEach — map собирает все результаты в новый массив
+// то есть matchPromises = [промис1, промис2, промис3, ...]
+const matchPromises = data.slice(0, 8).map(match => 
+    dotaApi.getMatchInfo(match.match_id) // для каждого матча делаем запрос
+);
+
+// Promise.all принимает массив промисов и ЖДЁТ пока все завершатся
+// только после этого продолжает выполнение кода
+// allMatches = [данныеМатча1, данныеМатча2, данныеМатча3, ...]
+const allMatches = await Promise.all(matchPromises);
+
+// теперь forEach — здесь он уже безопасен, потому что
+// все данные уже загружены и лежат в allMatches по порядку
+allMatches.forEach(games => {
+    // находим себя среди игроков матча
+    const playerInMatch = games.players.find(player => player.account_id == account_id);
+    
+    // находим героя по id
+    const hero = heroes.find(hero => hero.id == playerInMatch.hero_id);
+    
+    // если герой найден берём его имя, иначе пишем "Unknown hero"
+    const heroName = hero ? hero.localized_name : "Unknown hero";
+    
+    // определяем победил ли игрок:
+    // если игрок за Radiant И Radiant победил — победа
+    // если игрок за Dire И Radiant проиграл — тоже победа
+    const playerWon =
+        (playerInMatch.isRadiant && games.radiant_win) ||
+        (!playerInMatch.isRadiant && !games.radiant_win);
+
+    const gameResult = playerWon ? "Victory" : "Defeat";
+    const resultClass = playerWon ? "result-win" : "result-lose";
+
+    // добавляем карточку в HTML
+    gameHistory.innerHTML += `
+    <a href="match.html?id=${games.match_id}" class="match-link">
+            <div class="match-card">
+                <div class="match-main">
+                    <div class="match-id">Match ID: ${games.match_id}</div>
+                    <div class="match-hero">Hero: ${heroName}</div>
+                </div>
+                <div class="match-side">
+                    <div class="match-kda">KDA: ${playerInMatch.kills}/${playerInMatch.deaths}/${playerInMatch.assists}</div>
+                    <span class="match-result ${resultClass}">${gameResult}</span>
+                </div>
+            </div>
+        </a>
+    `;
 });
-  const hero = heroes.find((hero) => hero.id == playerInMatch.hero_id);
-  const heroName = hero ? hero.localized_name : "Unknown hero";
-const playerWon =
-  (playerInMatch.isRadiant && games.radiant_win) ||
-  (!playerInMatch.isRadiant && !games.radiant_win);
-
-const gameResult = playerWon ? "Victory" : "Defeat";
-const resultClass = playerWon ? "result-win" : "result-lose";
-
-
-gameHistory.innerHTML += `
-  <a href="match.html?id=${games.match_id}" class="match-link">
-    <div class="match-card">
-      <div class="match-main">
-        <div class="match-id">Match ID: ${games.match_id}</div>
-        <div class="match-hero">Hero: ${heroName}</div>
-      </div>
-      <div class="match-side">
-        <div class="match-kda">KDA: ${playerInMatch.kills}/${playerInMatch.deaths}/${playerInMatch.assists}</div>
-        <span class="match-result ${resultClass}">${gameResult}</span>
-      </div>
-    </div>
-  </a>
-`;
-    });
   }
 });
 //test steam id

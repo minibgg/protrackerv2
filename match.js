@@ -101,7 +101,7 @@ return `
       ${itemIcons}
     </div>
   </li>
-`;//до
+`;
 };
 
     const radiantPlayers = players
@@ -131,7 +131,7 @@ return `
                 </div>
             </div>
     `;
-
+//до
 } catch(error){
     matchDetails.innerText = "не удалось загрузить матч"//поиск багов
 }
