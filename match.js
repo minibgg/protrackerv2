@@ -15,22 +15,28 @@ async function loadMatchDetails() {
         return;
     }
 
-    const dotaApi = {
+        const dotaApi = {
     async getMatchInfo(matchId){
     const res = await fetch(`https://api.opendota.com/api/matches/${matchId}`)
     const data = await res.json();
     return data;
-  },
-    async getHeroes(){
-  const res = await fetch(`https://api.opendota.com/api/heroes`);
-  const heroesName = await res.json();
-  return heroesName;
-}
+    },
+        async getHeroes(){
+    const res = await fetch(`https://api.opendota.com/api/heroes`);
+    const heroesName = await res.json();
+    return heroesName;
+},
+    async getItems(){
+        const res = await fetch(`https://api.opendota.com/api/constants/items`);
+        const items = res.json();
+        return items;
+    }
 }
     
 try{
-    const matchData = await dotaApi.getMatchInfo(matchId)
-    const heroes = await dotaApi.getHeroes()
+    const matchData = await dotaApi.getMatchInfo(matchId);
+    const heroes = await dotaApi.getHeroes();
+    const items = await dotaApi.getItems();
 
             const players = matchData.players;
 
@@ -40,8 +46,45 @@ try{
     const teamName = player.isRadiant ? 'Radiant' : 'Dire';
     const KDA = player.kills + `/` + player.deaths + `/` + player.assists
     const profileName = player.personaname || `Игрок ${player.accound_id ?? 'unknown'}`
+    
+    const itemSlots = [
+    player.item_0,
+    player.item_1,
+    player.item_2,
+    player.item_3,
+    player.item_4,
+    player.item_5
+];
 
-    return `<li>${profileName}: ${heroName} - ${teamName} ${KDA}</li>`;
+const itemIcons = itemSlots
+    .filter(itemId => itemId !== 0)
+    .map(itemId => {
+    const item = Object.values(items).find(i => i.id === itemId);
+
+    if (!item) {
+    return '';
+    }
+
+    return `
+    <img
+        class="item-icon"
+        src="https://cdn.akamai.steamstatic.com${item.img}"
+        alt="${item.dname}"
+        title="${item.dname}"
+    >
+    `;
+})
+.join('');
+
+
+    return `
+  <li>
+    ${profileName} (${heroName}) ${teamName} ${KDA}
+    <div class="items-row">
+    ${itemIcons}
+    </div>
+  </li>
+`;
 }).join('');
 
     matchDetails.innerHTML = `

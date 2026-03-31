@@ -61,3 +61,16 @@ body {
 .playerList{
     border: 2px solid black;
 }
+.items-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.item-icon {
+  width: 40px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
