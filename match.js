@@ -40,7 +40,7 @@ try{
 
             const players = matchData.players;
 
-        const playersList = players.map(player => {
+        const renderPlayerCard = player => {
     const hero = heroes.find(h => h.id === player.hero_id);
     const heroName = hero ? hero.localized_name : `Неизвестный герой (id: ${player.hero_id})`;
     const teamName = player.isRadiant ? 'Radiant' : 'Dire';
@@ -81,7 +81,7 @@ const itemIcons = itemSlots
 })
 .join('');
 
-
+//от
 return `
   <li class="player-card">
     <div class="player-header">
@@ -101,14 +101,35 @@ return `
       ${itemIcons}
     </div>
   </li>
-`;
-}).join('');
+`;//до
+};
+
+    const radiantPlayers = players
+        .filter(player => player.isRadiant)
+        .map(renderPlayerCard)
+        .join('');
+
+    const direPlayers = players
+        .filter(player => !player.isRadiant)
+        .map(renderPlayerCard)
+        .join('');
 
     matchDetails.innerHTML = `
             <h2>ID матча: ${matchData.match_id}</h2>
-            <ul class="playerList">
-                ${playersList}
-            </ul>
+            <div class="teams-grid">
+                <div class="team-column radiant-column">
+                    <h3>Radiant</h3>
+                    <ul class="playerList">
+                        ${radiantPlayers}
+                    </ul>
+                </div>
+                <div class="team-column dire-column">
+                    <h3>Dire</h3>
+                    <ul class="playerList">
+                        ${direPlayers}
+                    </ul>
+                </div>
+            </div>
     `;
 
 } catch(error){
