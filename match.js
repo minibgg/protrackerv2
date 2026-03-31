@@ -46,6 +46,8 @@ try{
     const teamName = player.isRadiant ? 'Radiant' : 'Dire';
     const KDA = player.kills + `/` + player.deaths + `/` + player.assists
     const profileName = player.personaname || `Игрок ${player.accound_id ?? 'unknown'}`
+    const GPM = "GPM:" + player.gold_per_min;
+    const XPM = "XPM:" + player.xp_per_min
     
     const itemSlots = [
     player.item_0,
@@ -57,9 +59,9 @@ try{
 ];
 
 const itemIcons = itemSlots
-    .filter(itemId => itemId !== 0)
+    .filter(itemId => itemId !== 0) //ии написано, нужно понять
     .map(itemId => {
-    const item = Object.values(items).find(i => i.id === itemId);
+    const item = Object.values(items).find(i => i.id === itemId);//до
 
     if (!item) {
     return '';
@@ -79,7 +81,7 @@ const itemIcons = itemSlots
 
     return `
   <li>
-    ${profileName} (${heroName}) ${teamName} ${KDA}
+    ${profileName} (${heroName}) ${teamName} ${KDA} ${GPM} ${XPM}
     <div class="items-row">
     ${itemIcons}
     </div>
