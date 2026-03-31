@@ -1,0 +1,19 @@
+html, body{
+    height: 100%;
+    margin: 0;
+}
+body {
+    margin: 0px auto;
+    padding: 24px 16px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(
+    135deg,
+    var(--bg),
+    var(--surface),
+    var(--surface-2)
+    );
+    color: var(--text);
+    font-family: "Inter", sans-serif;
+}

@@ -34,15 +34,15 @@ try{
 
             const players = matchData.players;
 
-        const playersList = players.map(player => {//ии часть, понять что происходит
+        const playersList = players.map(player => {
     const hero = heroes.find(h => h.id === player.hero_id);
     const heroName = hero ? hero.localized_name : `Неизвестный герой (id: ${player.hero_id})`;
     const teamName = player.isRadiant ? 'Radiant' : 'Dire';
     const KDA = player.kills + `/` + player.deaths + `/` + player.assists
+    const profileName = player.personaname || `Игрок ${player.accound_id ?? 'unknown'}`
 
-    return `<li>${heroName} - ${teamName}   ${KDA}</li>`;
-}).join('');//до
-
+    return `<li>${profileName}: ${heroName} - ${teamName} ${KDA}</li>`;
+}).join('');
 
     matchDetails.innerHTML = `
             <h2>ID матча: ${matchData.match_id}</h2>
