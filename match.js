@@ -34,15 +34,19 @@ try{
 
             const players = matchData.players;
 
-        const heroesList = players.map(player => {
-            const hero = heroes.find(h => h.id === player.hero_id);
-            return hero ? hero.localized_name : `Неизвестный герой (id: ${player.hero_id})`;
-        });
+        const playersList = players.map(player => {
+    const hero = heroes.find(h => h.id === player.hero_id);
+    const heroName = hero ? hero.localized_name : `Неизвестный герой (id: ${player.hero_id})`;
+    const teamName = player.isRadiant ? 'Radiant' : 'Dire';
+
+    return `<li>${heroName} - ${teamName}</li>`;
+}).join('');
+
 
     matchDetails.innerHTML = `
             <h2>ID матча: ${matchData.match_id}</h2>
             <ul>
-                ${heroesList.map(name => `<li>${name}</li>`).join('')}
+                ${playersList}
             </ul>
     `;
 
@@ -51,3 +55,8 @@ try{
 }
 }
 loadMatchDetails();//вызов функции
+//test steam id
+//234816423
+//873568882
+//1315428024
+//121893417
