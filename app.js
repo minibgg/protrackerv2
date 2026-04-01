@@ -8,7 +8,7 @@ const dotaApi = {
   },
   async getWinLose(account_id){
     const res = await fetch(`https://api.opendota.com/api/players/${account_id}/wl`)
-    const data = await res.json();  
+    const data = await res.json();
     const total = data.win + data.lose;
     let winrate;
     if (total == 0){
@@ -51,7 +51,7 @@ if (heroesName == false){
 }
 document.querySelector('.searchbtn').addEventListener('click', async function searchplayer() {
 
-  let account_id = input.value.trim()
+  let account_id = input.string.trim()
     if (!input.value){
       alert("нерпавельный Id")
       return;
@@ -67,7 +67,7 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
     console.error(error);
   }
 
-    
+
     async function PlayerProfile(account_id){
       const data = await dotaApi.getAccountInfo(account_id)
 
@@ -80,9 +80,9 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
         }
 
         if (data.computed_mmr_turbo !== null) {
-          tmmrjs.innerText = "Примерный turbo mmr: " + data.computed_mmr_turbo.toFixed(0);    
+          tmmrjs.innerText = "Примерный turbo mmr: " + data.computed_mmr_turbo.toFixed(0);
         } else {
-          tmmrjs.innerText = "Нет игр в турбо"  
+          tmmrjs.innerText = "Нет игр в турбо"
         }
 
         const img = document.createElement('img');
@@ -110,7 +110,7 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
   // .map() проходит по каждому матчу и ВОЗВРАЩАЕТ промис (запрос к API)
 // в отличие от forEach — map собирает все результаты в новый массив
 // то есть matchPromises = [промис1, промис2, промис3, ...]
-const matchPromises = data.slice(0, 8).map(match => 
+const matchPromises = data.slice(0, 8).map(match =>
     dotaApi.getMatchInfo(match.match_id) // для каждого матча делаем запрос
 );
 
@@ -123,7 +123,7 @@ allMatches.forEach(games => {
     const playerInMatch = games.players.find(player => player.account_id == account_id);
     const hero = heroes.find(hero => hero.id == playerInMatch.hero_id);
     const heroName = hero ? hero.localized_name : "Unknown hero";
-    
+
     const playerWon =
         (playerInMatch.isRadiant && games.radiant_win) ||
         (!playerInMatch.isRadiant && !games.radiant_win);
