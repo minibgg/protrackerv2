@@ -1,6 +1,7 @@
 "use strict";
 
-const input = document.querySelector(".inputhero")
+const input = document.querySelector(".inputhero");
+const resultsContainer = document.querySelector(".hero-results");
 
 const dotaApi = {
   async getHeroes() {
@@ -38,11 +39,29 @@ const dotaApi = {
 (async () => {
 try{
   const heroStats = await dotaApi.getHeroStats()
-  console.log(heroStats)
   document.querySelector('.searchbtn').addEventListener('click', async function searchplayer() {
     let inputhero = input.value
     console.log(inputhero)
+
+      function renderHeroes(heroes) {
+  resultsContainer.innerHTML = "";
+
+  if (heroes.length === 0) {
+    resultsContainer.innerHTML = "<p>Герои не найдены.</p>";
+    return;
+  }
+
+  heroes.forEach((hero) => {
+    resultsContainer.innerHTML += `
+      <div class="hero-card">
+        <h3>${hero.localized_name}</h3>
+        <p>Основной атрибут: ${hero.primary_attr}</p>
+        <p>Тип атаки: ${hero.attack_type}</p>
+      </div>
+    `;
   });
+}
+  })
 } catch(error){
   console.log(error)
 //    matchDetails.innerText = "не удалось загрузить матч"//поиск багов

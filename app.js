@@ -51,7 +51,7 @@ if (heroesName == false){
 }
 document.querySelector('.searchbtn').addEventListener('click', async function searchplayer() {
 
-  let account_id = input.string.trim()
+  let account_id = input.value.trim()
     if (!input.value){
       alert("нерпавельный Id")
       return;
