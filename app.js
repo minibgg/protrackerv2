@@ -1,6 +1,5 @@
 'use strict'
 //получаем информацию о class
-
 const dotaApi = {
   async getAccountInfo(account_id){
     const res = await fetch(`https://api.opendota.com/api/players/${account_id}`);
@@ -155,4 +154,3 @@ allMatches.forEach(games => {
 //873568882
 //1315428024
 //121893417
-
