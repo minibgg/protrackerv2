@@ -100,6 +100,7 @@ const midGameItems = popularItems.mid_game_items || {};
 const midItemsHtml = Object.keys(midGameItems).map(itemKey => {
   const item = Object.values(items).find(item => item.id === Number(itemKey));
   if (!item) return "";
+  if (item.cost <= 1350) return "";
   const itemImageUrl = `https://cdn.akamai.steamstatic.com${item.img}`;
   return `<img src="${itemImageUrl}" alt="${item.dname}">`;
 }).join("");
@@ -110,6 +111,7 @@ const lateGameItems = popularItems.late_game_items || {};
 const lateItemsHtml = Object.keys(lateGameItems).map(itemKey => {
   const item = Object.values(items).find(item => item.id === Number(itemKey));
   if (!item) return "";
+  if (item.cost <= 2800) return "";
   const itemImageUrl = `https://cdn.akamai.steamstatic.com${item.img}`;
   return `<img src="${itemImageUrl}" alt="${item.dname}">`;
 }).join("");
