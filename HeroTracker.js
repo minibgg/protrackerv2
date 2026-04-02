@@ -2,7 +2,7 @@
 
 const input = document.querySelector(".inputhero");
 const resultsContainer = document.querySelector(".hero-results");
-const herostats = document.querySelector(".heroStats")
+const herostats = document.querySelector(".heroStats");
 
 const dotaApi = {
   async getHeroes() {
@@ -50,20 +50,20 @@ try{
   const searchInput = input.value.toLowerCase();
 
   // Фильтруем героев
-  const result = heroStats.filter(hero => {
+  const foundHeroes = heroStats.filter(hero => {
     const cleanName = hero.localized_name.toLowerCase().replace("-", " ");
     return cleanName.includes(searchInput);
   });
 
-  if (result.length > 0) {
-    const hero = result[0];
+  if (foundHeroes.length > 0) {
+    const hero = foundHeroes[0];
 
-    const cleanImgPath = hero.img.trim().split('?')[0];
-    const fullImgUrl = `https://api.opendota.com${cleanImgPath}`;
+    const heroImagePath = hero.img.trim().split('?')[0];
+    const heroImageUrl = `https://cdn.akamai.steamstatic.com${heroImagePath}`;
 
     herostats.innerHTML = `
-      <div class="hero-card">
-        <img src="${fullImgUrl}">
+      <div class="hero-frame">
+        <img src="${heroImageUrl}" alt="${hero.localized_name}">
         <h3>${hero.localized_name}</h3>
         <div>Roles: ${hero.roles}</div>
         <div>Attribute: ${hero.primary_attr.toUpperCase()}</div>
@@ -72,6 +72,7 @@ try{
   } else {
     herostats.innerHTML = "Герой не найден";
   }
+
 });
 } catch(error){
   console.log(error)
