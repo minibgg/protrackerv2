@@ -2,7 +2,8 @@
 
 const input = document.querySelector(".inputhero");
 const herostats = document.querySelector(".heroStats");
-const popularItem = document.querySelector(".popularItem")
+const startItems = document.querySelector(".startItems");
+const earlyItems = document.querySelector(".earlyItems");
 
 const dotaApi = {
   async getHeroes() {
@@ -35,11 +36,11 @@ const dotaApi = {
     const data = await res.json();
     return data;
   },
-  async getItems(){
+  async getItems() {
     const res = await fetch(`https://api.opendota.com/api/constants/items`);
     const data = await res.json();
     return data;
-    }
+  }
 };
 
 (async () => {
@@ -70,15 +71,26 @@ try{
 
     const popularItems = await dotaApi.getItemPopularity(hero.id);
 const items = await dotaApi.getItems();
-const startGameItems = popularItems.start_game_items;
+const startGameItems = popularItems.start_game_items || {};
 
-const startItemsHtml = Object.keys(startGameItems).map(itemKey => {
-  const item = Object.values(items).find(item => item.id === Number(itemKey));
-  const itemImageUrl = `https://cdn.akamai.steamstatic.com${item.img}`;
-  return `<img src="${itemImageUrl}" alt="${item.dname}">`;
+const startItemsHtml = Object.keys(startGameItems).map(itemKey => {//создает object с масивами типо
+  const item = Object.values(items).find(item => item.id === Number(itemKey));//масив item и в нем item_id: [1][2][3]
+  if (!item) return "";
+  const itemImageUrl = `https://cdn.akamai.steamstatic.com${item.img}`;//ищем видем item_id в popularitem из него в item number->name
+  return `<img src="${itemImageUrl}" alt="${item.dname}">`;//вывод
 }).join("");
 
-popularItem.innerHTML = startItemsHtml;
+startItems.innerHTML = startItemsHtml;
+
+const earlyGameItems = popularItems.early_game_items || {};
+const earlyItemsHtml = Object.keys(earlyGameItems).map(itemKey => {//создает object с масивами типо
+  const item = Object.values(items).find(item => item.id === Number(itemKey));//масив item и в нем item_id: [1][2][3]
+  if (!item) return "";
+  const itemImageUrl = `https://cdn.akamai.steamstatic.com${item.img}`;//ищем видем item_id в popularitem из него в item number->name
+  return `<img src="${itemImageUrl}" alt="${item.dname}">`;//вывод
+}).join("");
+
+earlyItems.innerHTML = earlyItemsHtml;
 
   } else {
     herostats.innerHTML = "Герой не найден";
