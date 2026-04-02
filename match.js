@@ -1,6 +1,8 @@
 'use strict'
 
     const matchDetails = document.getElementById('matchDetails');
+    const matchInput = document.querySelector(".inputMatchId")
+    const searchMatchBtn = document.querySelector(".searchMatchBtn")
 
 function getMatchIdFromUrl() {//разобратся подробнее
     const params = new URLSearchParams(window.location.search);
@@ -11,7 +13,7 @@ async function loadMatchDetails() {
     const matchId = getMatchIdFromUrl();//до
 
         if (!matchId) {
-        matchDetails.innerText = "ID матча не найден в URL";//не нашло игру
+        matchDetails.innerText = "";//не нашло игру
         return;
     }
 
@@ -137,6 +139,20 @@ return `
 }
 }
 loadMatchDetails();//вызов функции
+searchMatchBtn.addEventListener("click", function () {
+    const matchId = matchInput.value.trim();
+    if (!matchId) return;
+    window.location.search = `?id=${matchId}`;
+});
+
+matchInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        searchMatchBtn.click();
+    }
+});
+
+matchInput.value = getMatchIdFromUrl() || "";
+
 //test steam id
 //234816423
 //873568882
