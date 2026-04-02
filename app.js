@@ -45,7 +45,6 @@ const gameHistory = document.querySelector(".framegame")
 const heroesName = [];
 
 if (heroesName == false){
-  console.log('123')
 }
 document.querySelector('.searchbtn').addEventListener('click', async function searchplayer() {
 
