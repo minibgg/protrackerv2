@@ -2,6 +2,7 @@
 
 const input = document.querySelector(".inputhero");
 const resultsContainer = document.querySelector(".hero-results");
+const herostats = document.querySelector(".heroStats")
 
 const dotaApi = {
   async getHeroes() {
@@ -40,30 +41,25 @@ const dotaApi = {
 try{
   const heroStats = await dotaApi.getHeroStats()
   document.querySelector('.searchbtn').addEventListener('click', async function searchplayer() {
-    let inputhero = input.value
-    console.log(inputhero)
-
-      function renderHeroes(heroes) {
-  resultsContainer.innerHTML = "";
-
-  if (heroes.length === 0) {
-    resultsContainer.innerHTML = "<p>Герои не найдены.</p>";
-    return;
-  }
-
-  heroes.forEach((hero) => {
-    resultsContainer.innerHTML += `
-      <div class="hero-card">
-        <h3>${hero.localized_name}</h3>
-        <p>Основной атрибут: ${hero.primary_attr}</p>
-        <p>Тип атаки: ${hero.attack_type}</p>
-      </div>
-    `;
-  });
+    const searchInput = input.value
+    const result =  heroStats.filter(hero => {
+      const heroName = hero.localized_name.toLowerCase();
+      const cleanName = heroName.replace("-", " ");
+      return cleanName.includes(searchInput.toLowerCase());
+    })
+    console.log(result)
+    if (result.length > 0) {
+      const hero = result[0]; // Берем первого найденного героя
+        herostats.innerHTML = `
+        <div class="heroRole">Roles: ${hero.roles}</div>
+        <div>Hero attribute: ${hero.primary_attr}</div>
+        `;
+} else {
+    herostats.innerHTML = "Герой не найден";
 }
-  })
+});
 } catch(error){
   console.log(error)
 //    matchDetails.innerText = "не удалось загрузить матч"//поиск багов
-}
+};
 })();

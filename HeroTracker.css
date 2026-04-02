@@ -35,16 +35,18 @@ body {
     font-family: "Inter", sans-serif;
 }
 .frame{
-  border: 3px solid var(--surface);
+  border: 3px solid var(--border);
   border-radius: 10px;
   padding: 10px;
   min-height: 500px;
   min-width: 500px;
   background-color: var(--surface-2);
 }
-.searchbtn{
-  border: 3px solid var(--surface-2);
-  border:  10px;
-  padding: 5px;
-  margin: 5px;
+.searchbtn {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--text);
 }
