@@ -51,7 +51,7 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
 
   let account_id = input.value.trim()
     if (!account_id){
-      alert("РЅРµСЂРїР°РІРµР»СЊРЅС‹Р№ Id")
+      alert("неверный Id")
       return;
     }
       try {
@@ -61,7 +61,7 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
       PlayerRecentMatches(account_id)
     ]);
   } catch (error) {
-    alert("РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РґР°РЅРЅС‹Рµ");
+    alert("Аккаунт не найден");
     console.error(error);
   }
 
