@@ -58,11 +58,12 @@ try{
   if (result.length > 0) {
     const hero = result[0];
 
-    const fullImgUrl = `https://api.opendota.com${hero.img}`;
+    const cleanImgPath = hero.img.trim().split('?')[0];
+    const fullImgUrl = `https://api.opendota.com${cleanImgPath}`;
 
     herostats.innerHTML = `
       <div class="hero-card">
-        <img src="${fullImgUrl}" width="200">
+        <img src="${fullImgUrl}">
         <h3>${hero.localized_name}</h3>
         <div>Roles: ${hero.roles}</div>
         <div>Attribute: ${hero.primary_attr.toUpperCase()}</div>
