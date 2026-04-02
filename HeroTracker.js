@@ -1,8 +1,8 @@
 "use strict";
 
 const input = document.querySelector(".inputhero");
-const resultsContainer = document.querySelector(".hero-results");
 const herostats = document.querySelector(".heroStats");
+const popularItem = document.querySelector(".popularItem")
 
 const dotaApi = {
   async getHeroes() {
@@ -45,8 +45,7 @@ const dotaApi = {
 (async () => {
 try{
   const heroStats = await dotaApi.getHeroStats();
-  const items = await dotaApi.getItems();
-  document.querySelector('.searchbtn').addEventListener('click', function searchplayer() {
+  document.querySelector('.searchbtn').addEventListener('click', async function searchplayer() {
   const searchInput = input.value.toLowerCase();
 
   // Фильтруем героев
@@ -57,7 +56,6 @@ try{
 
   if (foundHeroes.length > 0) {
     const hero = foundHeroes[0];
-
     const heroImagePath = hero.img.trim().split('?')[0];
     const heroImageUrl = `https://cdn.akamai.steamstatic.com${heroImagePath}`;
 
@@ -69,6 +67,19 @@ try{
         <div>Attribute: ${hero.primary_attr.toUpperCase()}</div>
       </div>
     `;
+
+    const popularItems = await dotaApi.getItemPopularity(hero.id);
+const items = await dotaApi.getItems();
+const startGameItems = popularItems.start_game_items;
+
+const startItemsHtml = Object.keys(startGameItems).map(itemKey => {
+  const item = Object.values(items).find(item => item.id === Number(itemKey));
+  const itemImageUrl = `https://cdn.akamai.steamstatic.com${item.img}`;
+  return `<img src="${itemImageUrl}" alt="${item.dname}">`;
+}).join("");
+
+popularItem.innerHTML = startItemsHtml;
+
   } else {
     herostats.innerHTML = "Герой не найден";
   }
