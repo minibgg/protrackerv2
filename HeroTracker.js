@@ -1,6 +1,7 @@
 "use strict";
 
 const input = document.querySelector(".inputhero");
+const heroesList = document.querySelector("#heroesList");
 const herostats = document.querySelector(".heroStats");
 const startItems = document.querySelector(".startItems");
 const earlyItems = document.querySelector(".earlyItems");
@@ -50,6 +51,7 @@ const dotaApi = {
 (async () => {
 try{
   const heroStats = await dotaApi.getHeroStats();
+  heroesList.innerHTML = heroStats.map(hero => `<option value="${hero.localized_name}"></option>`).join("");
   document.querySelector('.searchbtn').addEventListener('click', async function searchplayer() {
   const searchInput = input.value.toLowerCase();
 
@@ -66,10 +68,12 @@ try{
 
     herostats.innerHTML = `
       <div class="hero-frame">
-        <img src="${heroImageUrl}" alt="${hero.localized_name}">
-        <h3>${hero.localized_name}</h3>
-        <div>Roles: ${hero.roles}</div>
-        <div>Attribute: ${hero.primary_attr.toUpperCase()}</div>
+        <img class="avatarframe" src="${heroImageUrl}" alt="${hero.localized_name}">
+        <div>
+          <h3 class="heroinfo">${hero.localized_name}</h3>
+          <div class="heroinfo">Roles: ${hero.roles}</div>
+          <div class="heroinfo">Attribute: ${hero.primary_attr.toUpperCase()}</div>
+        </div>
       </div>
     `;
 
@@ -77,24 +81,25 @@ try{
 const items = await dotaApi.getItems();
 
 const startGameItems = popularItems.start_game_items || {};
-const startItemsHtml = Object.keys(startGameItems).map(itemKey => {//создает object с масивами типо
-  const item = Object.values(items).find(item => item.id === Number(itemKey));//масив item и в нем item_id: [1][2][3]
+const startItemsHtml = Object.keys(startGameItems).map(itemKey => {
+  const item = Object.values(items).find(item => item.id === Number(itemKey));
   if (!item) return "";
-  const itemImageUrl = `https://cdn.akamai.steamstatic.com${item.img}`;//ищем видем item_id в popularitem из него в item number->name
-  return `<img src="${itemImageUrl}" alt="${item.dname}">`;//вывод
+  if (item.cost <= 0) return "";
+  const itemImageUrl = `https://cdn.akamai.steamstatic.com${item.img}`;
+  return `<img class="itemframe" src="${itemImageUrl}" alt="${item.dname}">`;
 }).join("");
 
-startItems.innerHTML = startItemsHtml;
+startItems.innerHTML = `<div id="itemsframe">${startItemsHtml}</div>`;
 
 const earlyGameItems = popularItems.early_game_items || {};
 const earlyItemsHtml = Object.keys(earlyGameItems).map(itemKey => {
   const item = Object.values(items).find(item => item.id === Number(itemKey));
   if (!item) return "";
   const itemImageUrl = `https://cdn.akamai.steamstatic.com${item.img}`;
-  return `<img src="${itemImageUrl}" alt="${item.dname}">`;
+  return `<img class="itemframe" src="${itemImageUrl}" alt="${item.dname}">`;
 }).join("");
 
-earlyItems.innerHTML = earlyItemsHtml;
+earlyItems.innerHTML = `<div id="itemsframe">${earlyItemsHtml}</div>`;
 
 const midGameItems = popularItems.mid_game_items || {};
 const midItemsHtml = Object.keys(midGameItems).map(itemKey => {
@@ -102,10 +107,10 @@ const midItemsHtml = Object.keys(midGameItems).map(itemKey => {
   if (!item) return "";
   if (item.cost <= 1350) return "";
   const itemImageUrl = `https://cdn.akamai.steamstatic.com${item.img}`;
-  return `<img src="${itemImageUrl}" alt="${item.dname}">`;
+  return `<img class="itemframe" src="${itemImageUrl}" alt="${item.dname}">`;
 }).join("");
 
-midItems.innerHTML = midItemsHtml;
+midItems.innerHTML = `<div id="itemsframe">${midItemsHtml}</div>`;
 
 const lateGameItems = popularItems.late_game_items || {};
 const lateItemsHtml = Object.keys(lateGameItems).map(itemKey => {
@@ -113,10 +118,10 @@ const lateItemsHtml = Object.keys(lateGameItems).map(itemKey => {
   if (!item) return "";
   if (item.cost <= 2800) return "";
   const itemImageUrl = `https://cdn.akamai.steamstatic.com${item.img}`;
-  return `<img src="${itemImageUrl}" alt="${item.dname}">`;
+  return `<img class="itemframe" src="${itemImageUrl}" alt="${item.dname}">`;
 }).join("");
 
-lateItems.innerHTML = lateItemsHtml;
+lateItems.innerHTML = `<div id="itemsframe">${lateItemsHtml}</div>`;
 
 const allMatchups = await dotaApi.getHeroMatchUp(hero.id);
 // Получаем с API массив всех матчапов для выбранного героя
@@ -141,15 +146,15 @@ const bestMatchups = filteredMatchups.slice(0, 4);
 
 const worstMatchups = filteredMatchups.slice(-4).reverse();
 
-goodMatchups.innerHTML = bestMatchups.map(matchup => {
+goodMatchups.innerHTML = `<div id="goodMatchupsId">${bestMatchups.map(matchup => {
   const bestHero = heroStats.find(heroStat => heroStat.id === matchup.hero_id);
-  return `<div>${bestHero.localized_name} ${(matchup.winRate * 100).toFixed(1)}%</div>`;
-}).join("");
+  return `<div class="matchupItem">${bestHero.localized_name} ${(matchup.winRate * 100).toFixed(1)}%</div>`;
+}).join("")}</div>`;
 
-badMatchups.innerHTML = worstMatchups.map(matchup => {
+badMatchups.innerHTML = `<div id="worstMatchupsId">${worstMatchups.map(matchup => {
   const worstHero = heroStats.find(heroStat => heroStat.id === matchup.hero_id);
-  return `<div>${worstHero.localized_name} ${(matchup.winRate * 100).toFixed(1)}%</div>`;
-}).join("");
+  return `<div class="matchupItem">${worstHero.localized_name} ${(matchup.winRate * 100).toFixed(1)}%</div>`;
+}).join("")}</div>`;
 // Берем последний элемент массива
 // Это самый низкий winRate
 
