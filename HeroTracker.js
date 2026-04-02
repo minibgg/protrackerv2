@@ -35,28 +35,42 @@ const dotaApi = {
     const data = await res.json();
     return data;
   },
+  async getItems(){
+    const res = await fetch(`https://api.opendota.com/api/constants/items`);
+    const data = await res.json();
+    return data;
+    }
 };
 
 (async () => {
 try{
-  const heroStats = await dotaApi.getHeroStats()
-  document.querySelector('.searchbtn').addEventListener('click', async function searchplayer() {
-    const searchInput = input.value
-    const result =  heroStats.filter(hero => {
-      const heroName = hero.localized_name.toLowerCase();
-      const cleanName = heroName.replace("-", " ");
-      return cleanName.includes(searchInput.toLowerCase());
-    })
-    console.log(result)
-    if (result.length > 0) {
-      const hero = result[0]; // Берем первого найденного героя
-        herostats.innerHTML = `
-        <div class="heroRole">Roles: ${hero.roles}</div>
-        <div>Hero attribute: ${hero.primary_attr}</div>
-        `;
-} else {
+  const heroStats = await dotaApi.getHeroStats();
+  const items = await dotaApi.getItems();
+  document.querySelector('.searchbtn').addEventListener('click', function searchplayer() {
+  const searchInput = input.value.toLowerCase();
+
+  // Фильтруем героев
+  const result = heroStats.filter(hero => {
+    const cleanName = hero.localized_name.toLowerCase().replace("-", " ");
+    return cleanName.includes(searchInput);
+  });
+
+  if (result.length > 0) {
+    const hero = result[0];
+
+    const fullImgUrl = `https://api.opendota.com${hero.img}`;
+
+    herostats.innerHTML = `
+      <div class="hero-card">
+        <img src="${fullImgUrl}" width="200">
+        <h3>${hero.localized_name}</h3>
+        <div>Roles: ${hero.roles}</div>
+        <div>Attribute: ${hero.primary_attr.toUpperCase()}</div>
+      </div>
+    `;
+  } else {
     herostats.innerHTML = "Герой не найден";
-}
+  }
 });
 } catch(error){
   console.log(error)
