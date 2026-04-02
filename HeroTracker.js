@@ -6,6 +6,8 @@ const startItems = document.querySelector(".startItems");
 const earlyItems = document.querySelector(".earlyItems");
 const midItems = document.querySelector(".midItems")
 const lateItems = document.querySelector(".lateItems")
+const goodMatchups = document.querySelector(".goodMatchups")
+const badMatchups = document.querySelector(".badMatchups")
 
 const dotaApi = {
   async getHeroes() {
@@ -73,8 +75,8 @@ try{
 
     const popularItems = await dotaApi.getItemPopularity(hero.id);
 const items = await dotaApi.getItems();
-const startGameItems = popularItems.start_game_items || {};
 
+const startGameItems = popularItems.start_game_items || {};
 const startItemsHtml = Object.keys(startGameItems).map(itemKey => {//создает object с масивами типо
   const item = Object.values(items).find(item => item.id === Number(itemKey));//масив item и в нем item_id: [1][2][3]
   if (!item) return "";
@@ -113,6 +115,41 @@ const lateItemsHtml = Object.keys(lateGameItems).map(itemKey => {
 }).join("");
 
 lateItems.innerHTML = lateItemsHtml;
+
+const allMatchups = await dotaApi.getHeroMatchUp(hero.id);
+// Получаем с API массив всех матчапов для выбранного героя
+
+const filteredMatchups = allMatchups
+  .filter(matchup => matchup.games_played >= 50)
+  // Оставляем только тех героев, против которых сыграно 50+ игр
+
+  .map(matchup => ({
+    ...matchup,
+    winRate: matchup.wins / matchup.games_played
+  }))
+  // Для каждого объекта добавляем новое поле winRate
+  // winRate = винрейт против этого героя
+
+  .sort((a, b) => b.winRate - a.winRate);
+// Сортируем массив по winRate от большего к меньшему
+
+const bestMatchups = filteredMatchups.slice(0, 4);
+// Берем первый элемент массива
+// Это самый высокий winRate
+
+const worstMatchups = filteredMatchups.slice(-4).reverse();
+
+goodMatchups.innerHTML = bestMatchups.map(matchup => {
+  const bestHero = heroStats.find(heroStat => heroStat.id === matchup.hero_id);
+  return `<div>${bestHero.localized_name} ${(matchup.winRate * 100).toFixed(1)}%</div>`;
+}).join("");
+
+badMatchups.innerHTML = worstMatchups.map(matchup => {
+  const worstHero = heroStats.find(heroStat => heroStat.id === matchup.hero_id);
+  return `<div>${worstHero.localized_name} ${(matchup.winRate * 100).toFixed(1)}%</div>`;
+}).join("");
+// Берем последний элемент массива
+// Это самый низкий winRate
 
   } else {
     herostats.innerHTML = "Герой не найден";
