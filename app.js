@@ -1,5 +1,4 @@
 'use strict'
-//получаем информацию о class
 const dotaApi = {
   async getAccountInfo(account_id){
     const res = await fetch(`https://api.opendota.com/api/players/${account_id}`);
@@ -22,7 +21,7 @@ const dotaApi = {
     }
   },
   async getRecentMatches(account_id){
-    const res = await fetch(`https://api.opendota.com/api/players/${account_id}/recentMatches`)
+    const res = await fetch(`https://api.opendota.com/api/players/${account_id}/matches?limit=8`)
     const data = await res.json();
     return data;
   },
@@ -37,7 +36,6 @@ async getHeroes(){
   return data;
 }
   }
-//получаем информацию о id
 const input = document.getElementById("steamid")
 const player = document.getElementById("player");
 const mmrjs = document.getElementById("mmr");
@@ -45,15 +43,15 @@ const tmmrjs = document.getElementById("tmmr");
 const wrjs = document.getElementById("wr");
 const gameHistory = document.querySelector(".framegame")
 const heroesName = [];
-//ожидание клика и после код
+
 if (heroesName == false){
   console.log('123')
 }
 document.querySelector('.searchbtn').addEventListener('click', async function searchplayer() {
 
   let account_id = input.value.trim()
-    if (!input.value){
-      alert("нерпавельный Id")
+    if (!account_id){
+      alert("РЅРµСЂРїР°РІРµР»СЊРЅС‹Р№ Id")
       return;
     }
       try {
@@ -63,7 +61,7 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
       PlayerRecentMatches(account_id)
     ]);
   } catch (error) {
-    alert("Не удалось загрузить данные");
+    alert("РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РґР°РЅРЅС‹Рµ");
     console.error(error);
   }
 
@@ -86,7 +84,7 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
         }
 
         const img = document.createElement('img');
-          img.src = data.profile.avatarfull; // Установка пути из JSON
+          img.src = data.profile.avatarfull;
         document.getElementById('steamavatar').innerText = '';
         document.getElementById('steamavatar').appendChild(img);
     };
@@ -95,7 +93,7 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
       const data = await dotaApi.getWinLose(account_id)
       const total = data.win + data.lose;
       if (total == 0) {
-        wrjs.innerText = "игры не найдены";
+        wrjs.innerText = "Игры не найдены";
       } else {
       wrjs.innerText = "WR: " + ((data.win / (data.win + data.lose)) * 100).toFixed(1) + "%";
       }
@@ -107,31 +105,20 @@ document.querySelector('.searchbtn').addEventListener('click', async function se
   gameHistory.innerHTML = "";
 
 
-  // .map() проходит по каждому матчу и ВОЗВРАЩАЕТ промис (запрос к API)
-// в отличие от forEach — map собирает все результаты в новый массив
-// то есть matchPromises = [промис1, промис2, промис3, ...]
-const matchPromises = data.slice(0, 8).map(match =>
-    dotaApi.getMatchInfo(match.match_id) // для каждого матча делаем запрос
-);
-
-// Promise.all принимает массив промисов и ЖДЁТ пока все завершатся
-// только после этого продолжает выполнение кода
-// allMatches = [данныеМатча1, данныеМатча2, данныеМатча3, ...]
+const matchPromises = data.slice(0, 8);
 const allMatches = await Promise.all(matchPromises);
 
 allMatches.forEach(games => {
-    const playerInMatch = games.players.find(player => player.account_id == account_id);
-    const hero = heroes.find(hero => hero.id == playerInMatch.hero_id);
+    const hero = heroes.find(hero => hero.id == games.hero_id);
     const heroName = hero ? hero.localized_name : "Unknown hero";
 
     const playerWon =
-        (playerInMatch.isRadiant && games.radiant_win) ||
-        (!playerInMatch.isRadiant && !games.radiant_win);
+        (games.player_slot < 128 && games.radiant_win) ||
+        (games.player_slot >= 128 && !games.radiant_win);
 
     const gameResult = playerWon ? "Victory" : "Defeat";
     const resultClass = playerWon ? "result-win" : "result-lose";
 
-    // добавляем карточку в HTML
     gameHistory.innerHTML += `
     <a href="match.html?id=${games.match_id}" class="match-link">
             <div class="match-card">
@@ -140,7 +127,7 @@ allMatches.forEach(games => {
                     <div class="match-hero">Hero: ${heroName}</div>
                 </div>
                 <div class="match-side">
-                    <div class="match-kda">KDA: ${playerInMatch.kills}/${playerInMatch.deaths}/${playerInMatch.assists}</div>
+                    <div class="match-kda">KDA: ${games.kills}/${games.deaths}/${games.assists}</div>
                     <span class="match-result ${resultClass}">${gameResult}</span>
                 </div>
             </div>
