@@ -261,7 +261,7 @@ body {
     box-shadow: 0 4px 12px rgba(96, 165, 250, 0.35);
     background-color: var(--panel-soft);
     padding: 8px;
-    font-size: large;
+    font-size: x-large;
     color: var(--text);
     transition: transform 0.2s;
     transform: scale(1);

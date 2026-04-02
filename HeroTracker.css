@@ -128,3 +128,22 @@ body {
   color: #ef4444;
   box-shadow: 0 0 15px rgba(239, 68, 68, 0.45);
 }
+.steamIdBtn{
+    border: 2px solid var(--border-strong);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.35);
+    background-color: var(--panel-soft);
+    padding: 8px;
+    font-size: medium;
+    color: var(--text);
+    transition: transform 0.2s;
+    transform: scale(1);
+    margin-bottom: 10px;
+}
+.steamIdBtn:hover{
+    transform: scale(1.1);
+    background-color: #1f3152;
+}
+.steamIdBtn:active{
+    transform: scale(0.95);
+}

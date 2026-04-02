@@ -32,7 +32,7 @@ async function loadMatchDetails() {
         return items;
     }
 }
-    
+
 try{
     const matchData = await dotaApi.getMatchInfo(matchId);
     const heroes = await dotaApi.getHeroes();
@@ -51,7 +51,7 @@ try{
 
     const heroShortName = hero ? hero.name.replace('npc_dota_hero_', '') : 'unknown';
     const heroIconUrl = `https://cdn.akamai.steamstatic.com/apps/dota2/images/dota_react/heroes/${heroShortName}.png`;
-    
+
     const itemSlots = [
     player.item_0,
     player.item_1,
@@ -115,7 +115,7 @@ return `
         .join('');
 
     matchDetails.innerHTML = `
-            <h2>ID матча: ${matchData.match_id}</h2>
+            <h2 class="IDmatch">ID матча: ${matchData.match_id}</h2>
             <div class="teams-grid">
                 <div class="team-column radiant-column">
                     <h3>Radiant</h3>
