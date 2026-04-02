@@ -156,4 +156,29 @@ body {
   width: fit-content;
   height: fit-content;
 }
-
+.transferButton{
+    border: 2px solid var(--border-strong);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.35);
+    background-color: var(--panel-soft);
+    padding: 8px;
+    font-size: x-large;
+    color: var(--text);
+    transition: transform 0.2s;
+    transform: scale(1);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 25px;
+}
+.transferButton:hover{
+    transform: scale(1.1);
+    background-color: #1f3152;
+}
+.transferButton:active{
+    transform: scale(0.95);
+}
+.transferButtons {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
