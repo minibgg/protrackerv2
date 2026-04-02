@@ -268,6 +268,10 @@ body {
     display: flex;
     flex-wrap: wrap;
     font-size: 25px;
+    width: 165px;
+    height: 35px;
+    display: flex;
+    text-align: center;
 }
 .transferButton:hover{
     transform: scale(1.1);
